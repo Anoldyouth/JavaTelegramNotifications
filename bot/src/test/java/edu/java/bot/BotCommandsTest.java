@@ -85,6 +85,11 @@ public class BotCommandsTest {
                         new UntrackResponse(update, List.of()).getCommands()
                 ),
                 Arguments.of(
+                        CommandEnum.LIST.getCommand(),
+                        "Список отслеживаемых страниц",
+                        new ListResponse(update, List.of()).getCommands()
+                ),
+                Arguments.of(
                         "https://www.google.com",
                         "Ссылка https://www.google.com успешно добавлена для отслеживания.",
                         new TrackUrlResponse(update, "https://www.google.com").getCommands()
