@@ -31,7 +31,10 @@
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
-        <wiremock.version>3.3.1</wiremock.version>
+        <wiremock.version>3.0.1</wiremock.version>
+        <jeasy-easy-random-core.version>5.0.0</jeasy-easy-random-core.version>
+        <jeasy-easy-random-core.version>5.0.0</jeasy-easy-random-core.version>
+        <jackson-datatype-jsr310.version>2.16.1</jackson-datatype-jsr310.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
@@ -59,9 +62,10 @@
                 <version>${java-telegram-bot-api.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wiremock</groupId>
-                <artifactId>wiremock</artifactId>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-standalone</artifactId>
                 <version>${wiremock.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -123,6 +127,17 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>${jeasy-easy-random-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
     </dependencies>
 
