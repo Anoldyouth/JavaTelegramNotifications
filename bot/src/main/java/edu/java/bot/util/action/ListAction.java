@@ -2,12 +2,12 @@ package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.CommandEnum;
-import edu.java.bot.util.response.ListResponse;
-import edu.java.bot.util.response.ResponseData;
+import edu.java.bot.dto.response.ListResponse;
+import edu.java.bot.dto.response.ResponseData;
 import java.util.List;
 import java.util.Optional;
 
-public class ListAction  extends AbstractAction {
+public class ListAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {
         if (update.message() == null) {

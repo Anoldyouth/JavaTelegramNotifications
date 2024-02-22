@@ -2,12 +2,12 @@ package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.CommandEnum;
-import edu.java.bot.util.response.ResponseData;
-import edu.java.bot.util.response.UntrackResponse;
+import edu.java.bot.dto.response.ResponseData;
+import edu.java.bot.dto.response.UntrackResponse;
 import java.util.List;
 import java.util.Optional;
 
-public class UntrackAction  extends AbstractAction {
+public class UntrackAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {
         if (update.message() == null) {

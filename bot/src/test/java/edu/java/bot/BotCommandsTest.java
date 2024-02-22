@@ -6,25 +6,24 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
-import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
-import edu.java.bot.util.Bot;
+import edu.java.bot.service.Bot;
 import edu.java.bot.util.CommandEnum;
-import edu.java.bot.util.response.HelpResponse;
-import edu.java.bot.util.response.ListResponse;
-import edu.java.bot.util.response.StartResponse;
-import edu.java.bot.util.response.TrackResponse;
-import edu.java.bot.util.response.TrackUrlResponse;
-import edu.java.bot.util.response.UnknownCommandResponse;
-import edu.java.bot.util.response.UntrackResponse;
+import edu.java.bot.dto.response.HelpResponse;
+import edu.java.bot.dto.response.ListResponse;
+import edu.java.bot.dto.response.StartResponse;
+import edu.java.bot.dto.response.TrackResponse;
+import edu.java.bot.dto.response.TrackUrlResponse;
+import edu.java.bot.dto.response.UnknownCommandResponse;
+import edu.java.bot.dto.response.UntrackResponse;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,22 +40,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class BotCommandsTest {
-    @Mock
-    static TelegramBot telegramBotMock;
-
-    @InjectMocks
-    static Bot bot = new Bot(new ApplicationConfig("test"));
+    Bot bot;
+    TelegramBot telegramBotMock;
 
     @Captor
     ArgumentCaptor<BaseRequest<?, ?>> captor;
 
-    @BeforeAll
-    static void startBot() {
+    @BeforeEach
+    void startBot() {
+        var telegramBot = mock(TelegramBot.class);
+        telegramBotMock = telegramBot;
+        bot = new Bot(telegramBot);
+
         bot.start();
     }
 
     static Arguments[] commands() {
-        var update = makeMockUpdate();
+        var update = makeMockUpdateMessage();
 
         return new Arguments[]{
                 Arguments.of(
@@ -113,8 +113,6 @@ public class BotCommandsTest {
         verify(telegramBotMock, times(2)).execute(captor.capture());
         List<BaseRequest<?, ?>> capturedArguments = captor.getAllValues();
 
-        System.out.println(capturedArguments.get(0).getParameters().get("text"));
-
         Assertions.assertTrue(
                 ((String)capturedArguments.get(0).getParameters().get("text"))
                         .startsWith(responseMessageStart)
@@ -139,7 +137,7 @@ public class BotCommandsTest {
         return List.of(updateMock);
     }
 
-    public static Update makeMockUpdate() {
+    public static Update makeMockUpdateMessage() {
         var chatMock = mock(Chat.class);
         when(chatMock.id()).thenReturn(1L);
 

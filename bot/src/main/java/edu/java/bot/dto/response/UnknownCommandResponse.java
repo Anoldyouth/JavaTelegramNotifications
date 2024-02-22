@@ -1,4 +1,4 @@
-package edu.java.bot.util.response;
+package edu.java.bot.dto.response;
 
 import com.pengrad.telegrambot.model.Update;
 
