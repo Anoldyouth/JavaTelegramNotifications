@@ -1,9 +1,9 @@
 package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.util.CommandEnum;
 import edu.java.bot.dto.response.ResponseData;
 import edu.java.bot.dto.response.StartResponse;
+import edu.java.bot.util.CommandEnum;
 import java.util.Optional;
 
 public class StartAction extends AbstractAction {

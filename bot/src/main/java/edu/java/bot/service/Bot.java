@@ -5,16 +5,12 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.configuration.Chain;
 import edu.java.bot.configuration.MainChain;
-import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.util.action.ActionFacade;
 import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service

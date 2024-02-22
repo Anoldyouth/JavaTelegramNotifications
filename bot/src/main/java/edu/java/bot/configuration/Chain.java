@@ -4,5 +4,5 @@ import edu.java.bot.util.action.Action;
 import java.util.List;
 
 public interface Chain {
-    public List<Action> getChain();
+    List<Action> getChain();
 }
