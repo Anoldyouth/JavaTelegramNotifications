@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ChainsConfiguration {
+    @SuppressWarnings("ParameterNumber")
     @Qualifier("mainChain")
     @Bean
     public Chain mainChain(

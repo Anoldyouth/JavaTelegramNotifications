@@ -10,7 +10,7 @@ import lombok.Getter;
 public class Chain {
     private final List<Action> chain;
 
-    public Chain(Action ...chain) {
+    public Chain(Action... chain) {
         this.chain = new LinkedList<>(Arrays.asList(chain));
     }
 }
