@@ -1,8 +1,8 @@
 package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.dto.response.ResponseData;
-import edu.java.bot.dto.response.UntrackUrlResponse;
+import edu.java.bot.util.response.ResponseData;
+import edu.java.bot.util.response.UntrackUrlResponse;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 

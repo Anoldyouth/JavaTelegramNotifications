@@ -1,8 +1,8 @@
 package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.dto.response.ResponseData;
-import edu.java.bot.dto.response.TrackUrlResponse;
+import edu.java.bot.util.response.ResponseData;
+import edu.java.bot.util.response.TrackUrlResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;

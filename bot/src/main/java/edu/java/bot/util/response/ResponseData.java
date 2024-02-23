@@ -1,4 +1,4 @@
-package edu.java.bot.dto.response;
+package edu.java.bot.util.response;
 
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SetMyCommands;

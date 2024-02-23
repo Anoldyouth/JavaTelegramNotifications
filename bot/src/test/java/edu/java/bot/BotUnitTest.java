@@ -2,37 +2,21 @@ package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
-import edu.java.bot.configuration.ChainsConfiguration;
-import edu.java.bot.dto.response.HelpResponse;
-import edu.java.bot.dto.response.ListResponse;
-import edu.java.bot.dto.response.ResponseData;
-import edu.java.bot.dto.response.StartResponse;
-import edu.java.bot.dto.response.TrackResponse;
-import edu.java.bot.dto.response.TrackUrlResponse;
-import edu.java.bot.dto.response.UnknownCommandResponse;
-import edu.java.bot.dto.response.UntrackResponse;
+import edu.java.bot.util.response.ResponseData;
 import edu.java.bot.service.Bot;
 import edu.java.bot.util.Chain;
 import edu.java.bot.util.ChainMapper;
-import edu.java.bot.util.CommandEnum;
 import edu.java.bot.util.action.AbstractAction;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
@@ -41,9 +25,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 @ExtendWith(MockitoExtension.class)
 public class BotUnitTest {

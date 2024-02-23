@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.request.SetWebhook;
-import edu.java.bot.dto.response.ResponseData;
+import edu.java.bot.util.response.ResponseData;
 import edu.java.bot.util.Chain;
 import edu.java.bot.util.action.AbstractAction;
 import edu.java.bot.util.action.Action;

@@ -1,7 +1,7 @@
 package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.dto.response.ResponseData;
+import edu.java.bot.util.response.ResponseData;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
