@@ -1,9 +1,9 @@
 package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
+import edu.java.bot.util.CommandEnum;
 import edu.java.bot.util.response.ResponseData;
 import edu.java.bot.util.response.StartResponse;
-import edu.java.bot.util.CommandEnum;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
