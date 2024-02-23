@@ -6,7 +6,9 @@ import edu.java.bot.dto.response.UntrackResponse;
 import edu.java.bot.util.CommandEnum;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UntrackAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {

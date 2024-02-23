@@ -5,7 +5,9 @@ import edu.java.bot.dto.response.ResponseData;
 import edu.java.bot.dto.response.TrackResponse;
 import edu.java.bot.util.CommandEnum;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {

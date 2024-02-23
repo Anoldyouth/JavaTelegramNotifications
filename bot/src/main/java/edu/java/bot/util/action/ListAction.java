@@ -6,7 +6,9 @@ import edu.java.bot.dto.response.ResponseData;
 import edu.java.bot.util.CommandEnum;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ListAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {

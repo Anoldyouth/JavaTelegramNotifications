@@ -5,7 +5,9 @@ import edu.java.bot.dto.response.ResponseData;
 import edu.java.bot.dto.response.StartResponse;
 import edu.java.bot.util.CommandEnum;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StartAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {

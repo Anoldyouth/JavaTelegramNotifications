@@ -3,8 +3,8 @@ package edu.java.bot.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.configuration.Chain;
-import edu.java.bot.configuration.MainChain;
+import edu.java.bot.util.Chain;
+import edu.java.bot.util.ChainMapper;
 import edu.java.bot.util.action.ActionFacade;
 import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
@@ -18,8 +18,11 @@ public class Bot implements AutoCloseable, UpdatesListener {
     private static final Logger LOGGER = LogManager.getLogger();
     private final TelegramBot bot;
 
-    public Bot(TelegramBot telegramBot) {
+    private final ChainMapper mapper;
+
+    public Bot(TelegramBot telegramBot, ChainMapper chainMapper) {
         this.bot = telegramBot;
+        this.mapper = chainMapper;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class Bot implements AutoCloseable, UpdatesListener {
         for (Update update: list) {
             LOGGER.debug("Bot get update");
             // TODO Добавить маппинг цепочки в зависимости от текущего состояния приложения для пользователя
-            Chain commandsChain = new MainChain();
+            Chain commandsChain = mapper.getChain(ChainMapper.ChainType.MAIN);
             ActionFacade facade = new ActionFacade(commandsChain.getChain());
 
             try {

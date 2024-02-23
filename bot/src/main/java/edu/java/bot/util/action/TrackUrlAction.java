@@ -6,7 +6,9 @@ import edu.java.bot.dto.response.TrackUrlResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackUrlAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {

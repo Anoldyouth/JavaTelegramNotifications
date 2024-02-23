@@ -15,6 +15,7 @@ import edu.java.bot.dto.response.TrackUrlResponse;
 import edu.java.bot.dto.response.UnknownCommandResponse;
 import edu.java.bot.dto.response.UntrackResponse;
 import edu.java.bot.service.Bot;
+import edu.java.bot.util.ChainMapper;
 import edu.java.bot.util.CommandEnum;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +46,7 @@ public class BotCommandsTest {
     void startBot() {
         var telegramBot = mock(TelegramBot.class);
         telegramBotMock = telegramBot;
-        bot = new Bot(telegramBot);
+        bot = new Bot(telegramBot, new ChainMapper());
 
         bot.start();
     }
