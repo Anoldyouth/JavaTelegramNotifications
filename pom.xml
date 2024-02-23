@@ -27,7 +27,7 @@
         <!-- Other -->
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
-        <paulschwarz-spring-dotenv>4.0.0</paulschwarz-spring-dotenv>
+        <paulschwarz-spring-dotenv.version>4.0.0</paulschwarz-spring-dotenv.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>

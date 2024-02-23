@@ -1,15 +1,15 @@
 app:
   scheduler:
-    enable: ${SCRAPPER_APP_SCHEDULER_ENABLE:true}
-    interval: ${SCRAPPER_APP_SCHEDULER_INTERVAL:10s}
-    force-check-delay: ${SCRAPPER_APP_SCHEDULER_FORCE_CHECK_DELAY:10s}
+    enable: true
+    interval: 10s
+    force-check-delay: 10s
 
 spring:
   application:
-    name: ${SCRAPPER_SPRING_APPLICATION_NAME}
+    name: scrapper
 
 server:
   port: ${SCRAPPER_SERVER_PORT:8080}
 
 logging:
-  config: ${SCRAPPER_LOGGING_CONFIG:"classpath:log4j2-plain.xml"}
+  config: classpath:log4j2-plain.xml
