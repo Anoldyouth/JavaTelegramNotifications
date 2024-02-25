@@ -1,7 +1,8 @@
 package edu.java.bot.configuration;
 
-import edu.java.bot.util.Chain;
-import edu.java.bot.util.ChainMapper;
+import edu.java.bot.util.ScenarioDispatcher;
+import edu.java.bot.util.action.Action;
+import edu.java.bot.util.action.ActionFacade;
 import edu.java.bot.util.action.CancelAction;
 import edu.java.bot.util.action.HelpAction;
 import edu.java.bot.util.action.ListAction;
@@ -10,16 +11,17 @@ import edu.java.bot.util.action.TrackAction;
 import edu.java.bot.util.action.TrackUrlAction;
 import edu.java.bot.util.action.UntrackAction;
 import edu.java.bot.util.action.UntrackUrlAction;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ChainsConfiguration {
+public class ScenariosConfiguration {
     @SuppressWarnings("ParameterNumber")
-    @Qualifier("mainChain")
+    @Qualifier("mainScenario")
     @Bean
-    public Chain mainChain(
+    public List<Action> mainScenario(
             CancelAction cancelAction, // временно, для тестов. Убрать после подключения БД
             StartAction startAction,
             HelpAction helpAction,
@@ -29,7 +31,7 @@ public class ChainsConfiguration {
             TrackUrlAction trackUrlAction, // временно, для тестов. Убрать после подключения БД
             UntrackUrlAction untrackUrlAction // временно, для тестов. Убрать после подключения БД
     ) {
-        return new Chain(
+        return List.of(
                 cancelAction,
                 startAction,
                 helpAction,
@@ -41,32 +43,37 @@ public class ChainsConfiguration {
         );
     }
 
-    @Qualifier("trackUrlChain")
+    @Qualifier("trackUrlScenario")
     @Bean
-    public Chain trackUrlChain(
+    public List<Action> trackUrlScenario(
             CancelAction cancelAction,
             TrackUrlAction trackUrlAction
     ) {
-        return new Chain(
+        return List.of(
                 cancelAction,
                 trackUrlAction
         );
     }
 
-    @Qualifier("untrackUrlChain")
+    @Qualifier("untrackUrlScenario")
     @Bean
-    public Chain untrackUrlChain(
+    public List<Action> untrackUrlScenario(
             CancelAction cancelAction,
             UntrackUrlAction untrackUrlAction
     ) {
-        return new Chain(
+        return List.of(
                 cancelAction,
                 untrackUrlAction
         );
     }
 
     @Bean
-    public ChainMapper chainMapper() {
-        return new ChainMapper();
+    public ScenarioDispatcher scenarioDispatcher() {
+        return new ScenarioDispatcher();
+    }
+
+    @Bean
+    public ActionFacade actionFacade() {
+        return new ActionFacade();
     }
 }

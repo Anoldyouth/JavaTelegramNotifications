@@ -4,17 +4,17 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.response.ResponseData;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class ActionFacade {
-    private final Action chainHead;
+    public ResponseData applyScenario(@NotNull List<Action> actions, Update update) {
+        return buildChain(actions).apply(update);
+    }
 
-    public ActionFacade(@NotNull List<Action> actions) {
+    private Action buildChain(@NotNull List<Action> actions) {
         if (actions.isEmpty()) {
-            this.chainHead = new UnknownCommandAction();
-
-            return;
+            return new UnknownCommandAction();
         }
 
         for (int i = 0; i < actions.size() - 1; i++) {
@@ -23,10 +23,6 @@ public class ActionFacade {
 
         actions.getLast().setNext(new UnknownCommandAction());
 
-        this.chainHead = actions.getFirst();
-    }
-
-    public ResponseData apply(Update update) {
-        return chainHead.apply(update);
+        return actions.getFirst();
     }
 }
