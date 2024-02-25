@@ -32,8 +32,6 @@
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
         <wiremock.version>3.0.1</wiremock.version>
-        <jeasy-easy-random-core.version>5.0.0</jeasy-easy-random-core.version>
-        <jeasy-easy-random-core.version>5.0.0</jeasy-easy-random-core.version>
         <jackson-datatype-jsr310.version>2.16.1</jackson-datatype-jsr310.version>
 
         <!-- Plugins -->
@@ -126,12 +124,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jeasy</groupId>
-            <artifactId>easy-random-core</artifactId>
-            <version>${jeasy-easy-random-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

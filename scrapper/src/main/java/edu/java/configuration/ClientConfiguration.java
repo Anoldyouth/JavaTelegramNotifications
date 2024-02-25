@@ -1,15 +1,16 @@
 package edu.java.configuration;
 
-import edu.java.client.GitHubClient;
-import edu.java.client.StackOverflowClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.java.client.github.GitHubClient;
+import edu.java.client.stackoverflow.StackOverflowClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class ClientConfiguration {
-    @Autowired GitHubConfig gitHubConfig;
-    @Autowired StackOverflowConfig stackOverflowConfig;
+    private final GitHubConfig gitHubConfig;
+    private final StackOverflowConfig stackOverflowConfig;
 
     @Bean
     public GitHubClient gitHubClient() {
