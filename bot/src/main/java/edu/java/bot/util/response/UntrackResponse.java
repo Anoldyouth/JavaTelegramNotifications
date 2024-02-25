@@ -21,6 +21,13 @@ public class UntrackResponse extends AbstractResponse {
      */
     private final String cursor;
 
+    public UntrackResponse(Update update, List<String> urls) {
+        super(update);
+
+        this.urls = urls;
+        this.cursor = null;
+    }
+
     @Override
     public ResponseData makeResponse() {
         if (this.urls.isEmpty()) {
@@ -62,12 +69,5 @@ public class UntrackResponse extends AbstractResponse {
 
         this.urls = urls;
         this.cursor = cursor;
-    }
-
-    public UntrackResponse(Update update, List<String> urls) {
-        super(update);
-
-        this.urls = urls;
-        this.cursor = null;
     }
 }

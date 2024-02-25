@@ -3,27 +3,27 @@ package edu.java.bot.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.util.Chain;
-import edu.java.bot.util.ChainMapper;
+import edu.java.bot.util.ScenarioDispatcher;
+import edu.java.bot.util.action.Action;
 import edu.java.bot.util.action.ActionFacade;
 import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class Bot implements AutoCloseable, UpdatesListener {
     private static final Logger LOGGER = LogManager.getLogger();
+
     private final TelegramBot bot;
 
-    private final ChainMapper mapper;
+    private final ScenarioDispatcher mapper;
 
-    public Bot(TelegramBot telegramBot, ChainMapper chainMapper) {
-        this.bot = telegramBot;
-        this.mapper = chainMapper;
-    }
+    private final ActionFacade facade;
 
     @Override
     public int process(List<Update> list) {
@@ -35,11 +35,11 @@ public class Bot implements AutoCloseable, UpdatesListener {
         for (Update update: list) {
             LOGGER.debug("Bot get update");
             // TODO Добавить маппинг цепочки в зависимости от текущего состояния приложения для пользователя
-            Chain commandsChain = mapper.getChain(ChainMapper.ChainType.MAIN);
-            ActionFacade facade = new ActionFacade(commandsChain.getChain());
+            List<Action> scenario = mapper.getScenario(ScenarioDispatcher.ScenarioType.MAIN);
 
             try {
-                var response = facade.apply(update);
+                var response = facade.applyScenario(scenario, update);
+
                 // Отправка сообщения
                 bot.execute(response.request());
                 // Отправка меню команд
@@ -54,7 +54,7 @@ public class Bot implements AutoCloseable, UpdatesListener {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         bot.shutdown();
     }
 
