@@ -2,7 +2,6 @@ package edu.java.bot.configuration;
 
 import edu.java.bot.util.ScenarioDispatcher;
 import edu.java.bot.util.action.Action;
-import edu.java.bot.util.action.ActionFacade;
 import edu.java.bot.util.action.CancelAction;
 import edu.java.bot.util.action.HelpAction;
 import edu.java.bot.util.action.ListAction;
@@ -70,10 +69,5 @@ public class ScenariosConfiguration {
     @Bean
     public ScenarioDispatcher scenarioDispatcher() {
         return new ScenarioDispatcher();
-    }
-
-    @Bean
-    public ActionFacade actionFacade() {
-        return new ActionFacade();
     }
 }
