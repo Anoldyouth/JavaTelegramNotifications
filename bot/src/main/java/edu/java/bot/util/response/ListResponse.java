@@ -16,6 +16,13 @@ public class ListResponse extends AbstractResponse {
      */
     private final String cursor;
 
+    public ListResponse(Update update, List<String> urls) {
+        super(update);
+
+        this.urls = urls;
+        this.cursor = null;
+    }
+
     @Override
     public ResponseData makeResponse() {
         if (this.urls.isEmpty()) {
@@ -47,12 +54,5 @@ public class ListResponse extends AbstractResponse {
 
         this.urls = urls;
         this.cursor = cursor;
-    }
-
-    public ListResponse(Update update, List<String> urls) {
-        super(update);
-
-        this.urls = urls;
-        this.cursor = null;
     }
 }
