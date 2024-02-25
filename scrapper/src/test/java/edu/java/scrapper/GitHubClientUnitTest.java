@@ -65,9 +65,7 @@ public class GitHubClientUnitTest {
                         .withBody(response)));
 
         List<RepositoryEvent> result = client
-                .listRepositoryEvents("owner", "repo", new ListRepositoryEventsRequest())
-                .collectList()
-                .block();
+                .listRepositoryEvents("owner", "repo", new ListRepositoryEventsRequest());
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -90,9 +88,7 @@ public class GitHubClientUnitTest {
                         .withBody(response)));
 
         List<RepositoryEvent> result = client
-                .listRepositoryEvents("owner", "repo", request)
-                .collectList()
-                .block();
+                .listRepositoryEvents("owner", "repo", request);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -114,8 +110,6 @@ public class GitHubClientUnitTest {
         assertThrows(
                 WebClientResponseException.class,
                 () -> client.listRepositoryEvents("owner", "repo", new ListRepositoryEventsRequest())
-                        .collectList()
-                        .block()
         );
     }
 }

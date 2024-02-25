@@ -78,9 +78,7 @@ public class StackOverflowClientUnitTest {
                         .withBody(response)));
 
         List<Question> result = client
-                .getQuestionsByIds(new int[]{1}, new GetQuestionsByIdsRequest())
-                .collectList()
-                .block();
+                .getQuestionsByIds(new int[]{1}, new GetQuestionsByIdsRequest());
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -132,9 +130,7 @@ public class StackOverflowClientUnitTest {
                         .withBody(response)));
 
         List<Question> result = client
-                .getQuestionsByIds(new int[]{1}, request)
-                .collectList()
-                .block();
+                .getQuestionsByIds(new int[]{1}, request);
 
         assertNotNull(result);
         assertEquals(1, result.size());
