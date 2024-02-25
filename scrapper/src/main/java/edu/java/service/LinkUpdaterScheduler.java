@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@ConditionalOnProperty(name = "app.scheduler.enable", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.scheduler.enabled", matchIfMissing = true)
 public class LinkUpdaterScheduler {
     private static final Logger LOGGER = LogManager.getLogger();
 

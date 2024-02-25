@@ -1,6 +1,6 @@
 app:
   scheduler:
-    enable: false
+    enabled: false
     interval: PT10S
     force-check-delay: 10s
 
