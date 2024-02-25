@@ -3,6 +3,7 @@ package edu.java.bot.action;
 import edu.java.bot.util.CommandEnum;
 import edu.java.bot.util.action.Action;
 import edu.java.bot.util.action.CancelAction;
+import edu.java.bot.util.action.StartAction;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +15,7 @@ public class StartActionUnitTest {
 
     @BeforeEach
     void prepare() {
-        action = new CancelAction();
+        action = new StartAction();
     }
 
     @Test
