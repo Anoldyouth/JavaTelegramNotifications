@@ -7,12 +7,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@ConditionalOnProperty("app.scheduler.enable")
+@ConditionalOnProperty(name = "app.scheduler.enable", matchIfMissing = true)
 public class LinkUpdaterScheduler {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
-    @ConditionalOnProperty(name = "app.scheduler.enabled", matchIfMissing = true)
     public void update() {
         LOGGER.info("Запуск задания по расписанию");
     }
