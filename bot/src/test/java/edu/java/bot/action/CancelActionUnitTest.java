@@ -42,6 +42,10 @@ public class CancelActionUnitTest {
     void anotherUpdateContent() {
         var update = ActionHelper.makeMockUpdateEmpty();
 
-        assertThrows(NullPointerException.class, () -> action.apply(update));
+        var response = action.apply(update);
+
+        assertThat(response).isNotNull();
+        Assertions.assertTrue(((String) response.request().getParameters().get("text"))
+                .startsWith("Неизвестная команда"));
     }
 }
