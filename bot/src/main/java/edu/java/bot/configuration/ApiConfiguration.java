@@ -2,6 +2,7 @@ package edu.java.bot.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -11,7 +12,10 @@ import org.springframework.context.annotation.Configuration;
                 version = "1.0.0",
                 description = "Bot service",
                 contact = @Contact(name = "Anoldyouth", url = "https://t.me/Anoldyouth")
-        )
+        ),
+        tags = {
+                @Tag(name = "updates", description = "Отправка обновлений")
+        }
 )
 public class ApiConfiguration {
 }

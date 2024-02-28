@@ -10,6 +10,8 @@ github-client:
 stack-overflow-client:
   base-url: ${STACK_OVERFLOW_BASE_URL:"https://api.stackexchange.com/2.3"}
 
+bot-client:
+  base-url: ${BOT_CLIENT_BASE_URL:"https://localhost:8090"}
 
 spring:
   application:

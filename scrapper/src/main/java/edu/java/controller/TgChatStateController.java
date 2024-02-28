@@ -44,9 +44,12 @@ public class TgChatStateController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @PutMapping("/tg-chat/state")
-    public ResponseEntity<TgChatStateResponse> replace(@RequestBody @Valid ReplaceTgChatStateRequest request) {
-        return ResponseEntity.ok().body(new TgChatStateResponse(request.tgChatId(), request.state()));
+    @PutMapping("/tg-chat/state/{id}")
+    public ResponseEntity<TgChatStateResponse> replace(
+            @PathVariable @Positive long id,
+            @RequestBody @Valid ReplaceTgChatStateRequest request
+    ) {
+        return ResponseEntity.ok().body(new TgChatStateResponse(id, request.state()));
     }
 
     @Operation(summary = "Получить состояние чата")

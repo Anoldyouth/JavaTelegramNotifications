@@ -1,6 +1,6 @@
-package edu.java.client;
+package edu.java.bot.client;
 
-import edu.java.exception.ApiException;
+import edu.java.bot.exception.ApiException;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
