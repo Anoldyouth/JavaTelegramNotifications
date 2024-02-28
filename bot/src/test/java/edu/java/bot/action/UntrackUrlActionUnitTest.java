@@ -4,7 +4,6 @@ import edu.java.bot.util.action.Action;
 import edu.java.bot.util.action.UntrackUrlAction;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

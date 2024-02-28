@@ -2,7 +2,7 @@ package edu.java.bot.client.scrapper.dto.request.link;
 
 public record PaginationRequest(
         String type,
-        long offset,
+        Long offset,
         String cursor,
         int limit
 ) {

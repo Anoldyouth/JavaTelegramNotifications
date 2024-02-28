@@ -1,13 +1,13 @@
 package edu.java.bot.client.scrapper.dto.response.link;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
-public record CursorPagination(
-        String type,
-        String cursor,
-        String previousCursor,
-
-        String nextCursor,
-        int limit
-) implements Pagination {
+@Getter
+@Setter
+public class CursorPagination extends Pagination {
+    private String cursor;
+    private String previousCursor;
+    private String nextCursor;
+    private int limit;
 }

@@ -11,6 +11,7 @@ import edu.java.bot.configuration.ScrapperConfig;
 import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
 
+@SuppressWarnings("MultipleStringLiterals")
 public class ScrapperClient extends AbstractClient {
     public ScrapperClient(ScrapperConfig config) {
         super(config.baseUrl());
@@ -31,35 +32,7 @@ public class ScrapperClient extends AbstractClient {
                 .block();
     }
 
-    public void createTgChatAsync(long id) {
-        this.webClient
-                .post()
-                .uri("/tg-chat/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
-                .bodyToMono(Void.class)
-                .block();
-    }
-
     public void deleteTgChat(long id) {
-        this.webClient
-                .delete()
-                .uri("/tg-chat/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
-                .bodyToMono(Void.class)
-                .block();
-    }
-
-    public void deleteTgChatAsync(long id) {
         this.webClient
                 .delete()
                 .uri("/tg-chat/{id}", id)
@@ -134,9 +107,9 @@ public class ScrapperClient extends AbstractClient {
                 .block();
     }
 
-    public TgChatStateResponse deleteTgChatState(long id) {
+    public TgChatStateResponse getTgChatState(long id) {
         return this.webClient
-                .delete()
+                .get()
                 .uri("/tg-chat/state/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
