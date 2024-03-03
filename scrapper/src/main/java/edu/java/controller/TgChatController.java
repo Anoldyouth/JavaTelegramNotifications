@@ -12,11 +12,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
 @Tag(name = "tg-chat")
+@RequestMapping("/tg-chat/{id}")
 public class TgChatController {
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponse(responseCode = "200", description = "Чат зарегистрирован")
@@ -30,7 +32,7 @@ public class TgChatController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @PostMapping("/tg-chat/{id}")
+    @PostMapping
     public void create(@PathVariable @Positive long id) {
     }
 
@@ -46,7 +48,7 @@ public class TgChatController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @DeleteMapping("/tg-chat/{id}")
+    @DeleteMapping
     public void delete(@PathVariable @Positive long id) {
     }
 }

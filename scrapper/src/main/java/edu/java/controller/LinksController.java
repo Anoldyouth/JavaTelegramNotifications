@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
 @Tag(name = "links")
+@RequestMapping("/links")
 public class LinksController {
     @Operation(summary = "Поиск отслеживаемых ссылок")
     @ApiResponse(
@@ -66,7 +68,7 @@ public class LinksController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @PostMapping("/links")
+    @PostMapping
     public ResponseEntity<LinkResponse> create(@RequestBody @Valid CreateLinkRequest request) {
         return ResponseEntity.ok(new LinkResponse(request.tgChatId(), request.link()));
     }
@@ -92,7 +94,7 @@ public class LinksController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @DeleteMapping("/links/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<LinkResponse> delete(@PathVariable @Positive long id) {
         return ResponseEntity.ok().body(new LinkResponse(id, "https://api.github.com"));
     }

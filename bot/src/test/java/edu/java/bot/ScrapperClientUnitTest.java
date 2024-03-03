@@ -332,7 +332,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(get(urlEqualTo("/tg-chat/state/1"))
+        stubFor(get(urlEqualTo("/tg-chat/1/state"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -359,7 +359,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(get(urlEqualTo("/tg-chat/state/1"))
+        stubFor(get(urlEqualTo("/tg-chat/1/state"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")
@@ -381,7 +381,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(put(urlEqualTo("/tg-chat/state/1"))
+        stubFor(put(urlEqualTo("/tg-chat/1/state"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -409,7 +409,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(put(urlEqualTo("/tg-chat/state/1"))
+        stubFor(put(urlEqualTo("/tg-chat/1/state"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")

@@ -69,7 +69,7 @@ public class ScrapperClient extends AbstractClient {
     public TgChatStateResponse replaceTgChatState(long id, ReplaceTgChatStateRequest request) {
         return this.webClient
                 .put()
-                .uri("/tg-chat/state/{id}", id)
+                .uri("/tg-chat/{id}/state", id)
                 .body(Mono.just(request), ReplaceTgChatStateRequest.class)
                 .retrieve()
                 .bodyToMono(TgChatStateResponse.class)
@@ -79,7 +79,7 @@ public class ScrapperClient extends AbstractClient {
     public TgChatStateResponse getTgChatState(long id) {
         return this.webClient
                 .get()
-                .uri("/tg-chat/state/{id}", id)
+                .uri("/tg-chat/{id}/state", id)
                 .retrieve()
                 .bodyToMono(TgChatStateResponse.class)
                 .block();

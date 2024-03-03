@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
 @Tag(name = "tg-chat-state")
+@RequestMapping("/tg-chat/{id}/state")
 public class TgChatStateController {
     @Operation(summary = "Заменить состояние чата")
     @ApiResponse(
@@ -44,7 +46,7 @@ public class TgChatStateController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @PutMapping("/tg-chat/state/{id}")
+    @PutMapping
     public ResponseEntity<TgChatStateResponse> replace(
             @PathVariable @Positive long id,
             @RequestBody @Valid ReplaceTgChatStateRequest request
@@ -73,7 +75,7 @@ public class TgChatStateController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @GetMapping("/tg-chat/state/{id}")
+    @GetMapping
     public ResponseEntity<TgChatStateResponse> get(@PathVariable @Positive long id) {
         return ResponseEntity.ok().body(new TgChatStateResponse(id, (short) 1));
     }

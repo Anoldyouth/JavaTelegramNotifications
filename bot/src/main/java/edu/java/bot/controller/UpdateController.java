@@ -12,11 +12,13 @@ import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
 @Tag(name = "updates")
+@RequestMapping("/updates")
 public class UpdateController {
     @Operation(summary = "Отправить обновление")
     @ApiResponse(responseCode = "200", description = "Обновление отработано")
@@ -30,7 +32,7 @@ public class UpdateController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @PostMapping("/updates")
+    @PostMapping
     public void update(@RequestBody @Valid SendUpdateRequest request) {
     }
 }
