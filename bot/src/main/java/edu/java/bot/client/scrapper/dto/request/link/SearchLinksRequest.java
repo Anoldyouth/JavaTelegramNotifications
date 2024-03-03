@@ -1,7 +1,10 @@
 package edu.java.bot.client.scrapper.dto.request.link;
 
 public record SearchLinksRequest(
-        Filter filter,
-        PaginationRequest pagination
+        long tgChatId,
+        String type,
+        Long offset,
+        String cursor,
+        Integer limit
 ) {
 }

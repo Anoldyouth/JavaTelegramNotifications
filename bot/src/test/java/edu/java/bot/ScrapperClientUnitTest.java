@@ -11,8 +11,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.bot.client.scrapper.ScrapperClient;
 import edu.java.bot.client.scrapper.dto.request.link.CreateLinkRequest;
-import edu.java.bot.client.scrapper.dto.request.link.Filter;
-import edu.java.bot.client.scrapper.dto.request.link.PaginationRequest;
 import edu.java.bot.client.scrapper.dto.request.link.SearchLinksRequest;
 import edu.java.bot.client.scrapper.dto.request.tg_chat_state.ReplaceTgChatStateRequest;
 import edu.java.bot.client.scrapper.dto.response.link.CursorPagination;
@@ -173,10 +171,7 @@ public class ScrapperClientUnitTest {
 
     @Test
     public void searchLinksOffsetSuccess() {
-        var request = new SearchLinksRequest(
-                new Filter(1L),
-                new PaginationRequest("OFFSET", 1L, null, 20)
-        );
+        var request = new SearchLinksRequest(1L, "OFFSET", 1L, null, 20);
         var response = """
                 {
                   "links": [
@@ -194,7 +189,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(post(urlEqualTo("/links:search"))
+        stubFor(get(urlEqualTo("/links?tgChatId=1&type=OFFSET&offset=1&limit=20"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -209,10 +204,7 @@ public class ScrapperClientUnitTest {
 
     @Test
     public void searchLinksCursorSuccess() {
-        var request = new SearchLinksRequest(
-                new Filter(1L),
-                new PaginationRequest("CURSOR", null, "test", 20)
-        );
+        var request = new SearchLinksRequest(1L, "CURSOR", null, "test", 20);
         var response = """
                 {
                   "links": [
@@ -231,7 +223,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(post(urlEqualTo("/links:search"))
+        stubFor(get(urlEqualTo("/links?tgChatId=1&type=CURSOR&cursor=test&limit=20"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -246,10 +238,7 @@ public class ScrapperClientUnitTest {
 
     @Test
     public void searchLinksError() {
-        var request = new SearchLinksRequest(
-                new Filter(1L),
-                new PaginationRequest("OFFSET", 1L, null, 20)
-        );
+        var request = new SearchLinksRequest(1L, "OFFSET", 1L, null, 20);
         var errorResponse = """
                 {
                   "description": "Validation Error",
@@ -263,7 +252,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(post(urlEqualTo("/links:search"))
+        stubFor(get(urlEqualTo("/links?tgChatId=1&type=OFFSET&offset=1&limit=20"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")

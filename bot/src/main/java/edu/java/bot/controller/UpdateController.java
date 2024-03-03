@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "updates")
 @RequestMapping("/updates")
 public class UpdateController {
-    @Operation(summary = "Отправить обновление")
+    @Operation(summary = "Отправить обновление", operationId = "sendUpdate")
     @ApiResponse(responseCode = "200", description = "Обновление отработано")
     @ApiResponse(
             responseCode = "400",

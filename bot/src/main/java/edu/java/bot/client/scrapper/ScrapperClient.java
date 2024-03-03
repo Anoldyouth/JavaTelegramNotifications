@@ -8,6 +8,8 @@ import edu.java.bot.client.scrapper.dto.response.link.LinkResponse;
 import edu.java.bot.client.scrapper.dto.response.link.SearchLinksResponse;
 import edu.java.bot.client.scrapper.dto.response.tg_chat_state.TgChatStateResponse;
 import edu.java.bot.configuration.properties.ScrapperConfig;
+import java.net.URI;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 @SuppressWarnings("MultipleStringLiterals")
@@ -57,12 +59,33 @@ public class ScrapperClient extends AbstractClient {
 
     public SearchLinksResponse searchLinks(SearchLinksRequest request) {
         return this.webClient
-                .post()
-                .uri("/links:search")
-                .body(Mono.just(request), CreateLinkRequest.class)
+                .get()
+                .uri(uriBuilder -> prepareSearchLinks(uriBuilder, request))
                 .retrieve()
                 .bodyToMono(SearchLinksResponse.class)
                 .block();
+    }
+
+    private URI prepareSearchLinks(UriBuilder builder, SearchLinksRequest request) {
+        builder.path("/links").queryParam("tgChatId", request.tgChatId());
+
+        if (request.type() != null) {
+            builder.queryParam("type", request.type());
+        }
+
+        if (request.offset() != null) {
+            builder.queryParam("offset", request.offset());
+        }
+
+        if (request.cursor() != null) {
+            builder.queryParam("cursor", request.cursor());
+        }
+
+        if (request.limit() != null) {
+            builder.queryParam("limit", request.limit());
+        }
+
+        return builder.build();
     }
 
     // tg-chat-state

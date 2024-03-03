@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "tg-chat")
 @RequestMapping("/tg-chat/{id}")
 public class TgChatController {
-    @Operation(summary = "Зарегистрировать чат")
+    @Operation(summary = "Зарегистрировать чат", operationId = "createTgChat")
     @ApiResponse(responseCode = "200", description = "Чат зарегистрирован")
     @ApiResponse(
             responseCode = "400",
@@ -36,7 +36,7 @@ public class TgChatController {
     public void create(@PathVariable @Positive long id) {
     }
 
-    @Operation(summary = "Удалить чат")
+    @Operation(summary = "Удалить чат", operationId = "deleteTgChat")
     @ApiResponse(responseCode = "200", description = "Чат удален")
     @ApiResponse(
             responseCode = "400",

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "tg-chat-state")
 @RequestMapping("/tg-chat/{id}/state")
 public class TgChatStateController {
-    @Operation(summary = "Заменить состояние чата")
+    @Operation(summary = "Заменить состояние чата", operationId = "replaceTgChatState")
     @ApiResponse(
             responseCode = "200",
             description = "Состояние сохранено",
@@ -54,7 +54,7 @@ public class TgChatStateController {
         return ResponseEntity.ok().body(new TgChatStateResponse(id, request.state()));
     }
 
-    @Operation(summary = "Получить состояние чата")
+    @Operation(summary = "Получить состояние чата", operationId = "getTgChatState")
     @ApiResponse(
             responseCode = "200",
             description = "Состояние получено",
