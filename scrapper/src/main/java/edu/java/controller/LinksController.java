@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +48,7 @@ public class LinksController {
     )
     @PostMapping("/links:search")
     public ResponseEntity<SearchLinksResponse> search(@Valid @RequestBody SearchLinksRequest request) {
-        return ResponseEntity.ok(new SearchLinksResponse(new LinkResponse[]{}, new OffsetPagination(
+        return ResponseEntity.ok(new SearchLinksResponse(List.of(), new OffsetPagination(
                 PaginationType.OFFSET, 1, 1, 1
         )));
     }
