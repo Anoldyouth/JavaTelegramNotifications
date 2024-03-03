@@ -2,6 +2,7 @@ package edu.java.bot.client;
 
 import edu.java.bot.exception.ApiException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -12,6 +13,7 @@ public abstract class AbstractClient {
     public AbstractClient(String baseUrl) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
+                .defaultHeader("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .defaultStatusHandler(
                         status -> status.is4xxClientError() || status.is5xxServerError(),
                         this::createApiException

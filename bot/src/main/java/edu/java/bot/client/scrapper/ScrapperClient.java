@@ -8,7 +8,6 @@ import edu.java.bot.client.scrapper.dto.response.link.LinkResponse;
 import edu.java.bot.client.scrapper.dto.response.link.SearchLinksResponse;
 import edu.java.bot.client.scrapper.dto.response.tg_chat_state.TgChatStateResponse;
 import edu.java.bot.configuration.ScrapperConfig;
-import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
 
 @SuppressWarnings("MultipleStringLiterals")
@@ -22,7 +21,6 @@ public class ScrapperClient extends AbstractClient {
         this.webClient
                 .post()
                 .uri("/tg-chat/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
@@ -32,7 +30,6 @@ public class ScrapperClient extends AbstractClient {
         this.webClient
                 .delete()
                 .uri("/tg-chat/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
@@ -43,7 +40,6 @@ public class ScrapperClient extends AbstractClient {
         return this.webClient
                 .post()
                 .uri("/links")
-                .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CreateLinkRequest.class)
                 .retrieve()
                 .bodyToMono(LinkResponse.class)
@@ -54,7 +50,6 @@ public class ScrapperClient extends AbstractClient {
         return this.webClient
                 .delete()
                 .uri("/links/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(LinkResponse.class)
                 .block();
@@ -64,7 +59,6 @@ public class ScrapperClient extends AbstractClient {
         return this.webClient
                 .post()
                 .uri("/links:search")
-                .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CreateLinkRequest.class)
                 .retrieve()
                 .bodyToMono(SearchLinksResponse.class)
@@ -76,7 +70,6 @@ public class ScrapperClient extends AbstractClient {
         return this.webClient
                 .put()
                 .uri("/tg-chat/state/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), ReplaceTgChatStateRequest.class)
                 .retrieve()
                 .bodyToMono(TgChatStateResponse.class)
@@ -87,7 +80,6 @@ public class ScrapperClient extends AbstractClient {
         return this.webClient
                 .get()
                 .uri("/tg-chat/state/{id}", id)
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(TgChatStateResponse.class)
                 .block();
