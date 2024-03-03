@@ -10,7 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.github.dto.request.ListRepositoryEventsRequest;
 import edu.java.client.github.dto.response.RepositoryEvent;
-import edu.java.configuration.GitHubConfig;
+import edu.java.configuration.properties.GitHubConfig;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;

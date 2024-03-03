@@ -2,7 +2,7 @@ package edu.java.client.bot;
 
 import edu.java.client.AbstractClient;
 import edu.java.client.bot.dto.request.SendUpdatesRequest;
-import edu.java.configuration.BotConfig;
+import edu.java.configuration.properties.BotConfig;
 import reactor.core.publisher.Mono;
 
 public class BotClient extends AbstractClient {

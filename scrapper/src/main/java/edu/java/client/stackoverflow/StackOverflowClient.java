@@ -3,7 +3,7 @@ package edu.java.client.stackoverflow;
 import edu.java.client.AbstractClient;
 import edu.java.client.stackoverflow.dto.request.GetQuestionsByIdsRequest;
 import edu.java.client.stackoverflow.dto.response.Question;
-import edu.java.configuration.StackOverflowConfig;
+import edu.java.configuration.properties.StackOverflowConfig;
 import java.net.URI;
 import java.time.LocalTime;
 import java.time.ZoneOffset;

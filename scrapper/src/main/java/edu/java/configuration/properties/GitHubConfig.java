@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.properties;
 
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;

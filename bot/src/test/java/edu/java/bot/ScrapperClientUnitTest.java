@@ -17,7 +17,7 @@ import edu.java.bot.client.scrapper.dto.request.link.SearchLinksRequest;
 import edu.java.bot.client.scrapper.dto.request.tg_chat_state.ReplaceTgChatStateRequest;
 import edu.java.bot.client.scrapper.dto.response.link.CursorPagination;
 import edu.java.bot.client.scrapper.dto.response.link.OffsetPagination;
-import edu.java.bot.configuration.ScrapperConfig;
+import edu.java.bot.configuration.properties.ScrapperConfig;
 import edu.java.bot.exception.ApiException;
 import java.net.URI;
 import static org.assertj.core.api.Assertions.assertThat;

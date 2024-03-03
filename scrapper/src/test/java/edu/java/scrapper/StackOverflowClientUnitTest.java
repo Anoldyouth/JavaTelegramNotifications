@@ -9,7 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.client.stackoverflow.dto.request.GetQuestionsByIdsRequest;
 import edu.java.client.stackoverflow.dto.response.Question;
-import edu.java.configuration.StackOverflowConfig;
+import edu.java.configuration.properties.StackOverflowConfig;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;

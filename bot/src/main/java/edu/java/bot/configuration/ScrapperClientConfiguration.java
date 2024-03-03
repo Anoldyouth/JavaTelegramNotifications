@@ -1,6 +1,7 @@
 package edu.java.bot.configuration;
 
 import edu.java.bot.client.scrapper.ScrapperClient;
+import edu.java.bot.configuration.properties.ScrapperConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

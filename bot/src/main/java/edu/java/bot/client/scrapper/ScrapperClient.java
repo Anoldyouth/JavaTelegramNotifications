@@ -7,7 +7,7 @@ import edu.java.bot.client.scrapper.dto.request.tg_chat_state.ReplaceTgChatState
 import edu.java.bot.client.scrapper.dto.response.link.LinkResponse;
 import edu.java.bot.client.scrapper.dto.response.link.SearchLinksResponse;
 import edu.java.bot.client.scrapper.dto.response.tg_chat_state.TgChatStateResponse;
-import edu.java.bot.configuration.ScrapperConfig;
+import edu.java.bot.configuration.properties.ScrapperConfig;
 import reactor.core.publisher.Mono;
 
 @SuppressWarnings("MultipleStringLiterals")

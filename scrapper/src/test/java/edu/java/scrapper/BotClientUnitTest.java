@@ -1,6 +1,5 @@
 package edu.java.scrapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
@@ -10,10 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.client.bot.BotClient;
 import edu.java.client.bot.dto.request.SendUpdatesRequest;
-import edu.java.client.github.dto.request.ListRepositoryEventsRequest;
-import edu.java.client.github.dto.response.RepositoryEvent;
-import edu.java.configuration.BotConfig;
-import edu.java.configuration.GitHubConfig;
+import edu.java.configuration.properties.BotConfig;
 import edu.java.exception.ApiException;
 import java.net.URI;
 import java.util.List;
@@ -26,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.Exceptions;
 
 public class BotClientUnitTest {
     private WireMockServer wireMockServer;
