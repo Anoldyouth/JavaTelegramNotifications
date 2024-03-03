@@ -24,10 +24,6 @@ public class ScrapperClient extends AbstractClient {
                 .uri("/tg-chat/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(Void.class)
                 .block();
     }
@@ -38,10 +34,6 @@ public class ScrapperClient extends AbstractClient {
                 .uri("/tg-chat/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(Void.class)
                 .block();
     }
@@ -54,10 +46,6 @@ public class ScrapperClient extends AbstractClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CreateLinkRequest.class)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(LinkResponse.class)
                 .block();
     }
@@ -68,10 +56,6 @@ public class ScrapperClient extends AbstractClient {
                 .uri("/links/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(LinkResponse.class)
                 .block();
     }
@@ -83,10 +67,6 @@ public class ScrapperClient extends AbstractClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CreateLinkRequest.class)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(SearchLinksResponse.class)
                 .block();
     }
@@ -99,10 +79,6 @@ public class ScrapperClient extends AbstractClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), ReplaceTgChatStateRequest.class)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(TgChatStateResponse.class)
                 .block();
     }
@@ -113,10 +89,6 @@ public class ScrapperClient extends AbstractClient {
                 .uri("/tg-chat/state/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(TgChatStateResponse.class)
                 .block();
     }

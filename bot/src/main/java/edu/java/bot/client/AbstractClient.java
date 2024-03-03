@@ -10,7 +10,13 @@ public abstract class AbstractClient {
     protected final WebClient webClient;
 
     public AbstractClient(String baseUrl) {
-        this.webClient = WebClient.builder().baseUrl(baseUrl).build();
+        this.webClient = WebClient.builder()
+                .baseUrl(baseUrl)
+                .defaultStatusHandler(
+                        status -> status.is4xxClientError() || status.is5xxServerError(),
+                        this::createApiException
+                )
+                .build();
     }
 
     protected Mono<ApiException> createApiException(ClientResponse clientResponse) {

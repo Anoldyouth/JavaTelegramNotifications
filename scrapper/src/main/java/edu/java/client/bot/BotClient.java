@@ -18,10 +18,6 @@ public class BotClient extends AbstractClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), SendUpdatesRequest.class)
                 .retrieve()
-                .onStatus(
-                        status -> status.is4xxClientError() || status.is5xxServerError(),
-                        this::createApiException
-                )
                 .bodyToMono(Void.class)
                 .block();
     }
