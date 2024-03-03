@@ -1,8 +1,15 @@
 app:
   scheduler:
-    enable: true
-    interval: 10s
+    enabled: false
+    interval: PT10S
     force-check-delay: 10s
+
+github-client:
+  base-url: ${GITHUB_BASE_URL:"https://api.github.com"}
+
+stack-overflow-client:
+  base-url: ${STACK_OVERFLOW_BASE_URL:"https://api.stackexchange.com/2.3"}
+
 
 spring:
   application:
