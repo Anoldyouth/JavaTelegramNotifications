@@ -35,14 +35,14 @@ public class DefaultExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ApiErrorResponse> globalPipeline(Throwable throwable) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> globalPipeline(Exception exception) {
         var apiErrorResponse = new ApiErrorResponse(
                 "Server Error",
                 "500",
-                throwable.getClass().getName(),
-                throwable.getMessage(),
-                throwable.getStackTrace()
+                exception.getClass().getName(),
+                exception.getMessage(),
+                exception.getStackTrace()
         );
 
         return ResponseEntity.internalServerError().body(apiErrorResponse);
