@@ -48,14 +48,14 @@ public class LinksController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @GetMapping
+    @GetMapping("/{tgChatId}")
     public ResponseEntity<SearchLinksResponse> search(
             @Parameter(
                     description = "Идентификатор чата",
                     example = "1",
                     required = true
             )
-            @RequestParam
+            @PathVariable
             @Positive
             long tgChatId,
 

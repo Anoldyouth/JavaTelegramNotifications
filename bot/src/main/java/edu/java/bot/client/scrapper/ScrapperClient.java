@@ -57,17 +57,17 @@ public class ScrapperClient extends AbstractClient {
                 .block();
     }
 
-    public SearchLinksResponse searchLinks(SearchLinksRequest request) {
+    public SearchLinksResponse searchLinks(long tgChatId, SearchLinksRequest request) {
         return this.webClient
                 .get()
-                .uri(uriBuilder -> prepareSearchLinks(uriBuilder, request))
+                .uri(uriBuilder -> prepareSearchLinks(uriBuilder, tgChatId, request))
                 .retrieve()
                 .bodyToMono(SearchLinksResponse.class)
                 .block();
     }
 
-    private URI prepareSearchLinks(UriBuilder builder, SearchLinksRequest request) {
-        builder.path("/links").queryParam("tgChatId", request.tgChatId());
+    private URI prepareSearchLinks(UriBuilder builder, long tgChatId, SearchLinksRequest request) {
+        builder.path("/links/{tgChatId}");
 
         if (request.type() != null) {
             builder.queryParam("type", request.type());
@@ -85,7 +85,7 @@ public class ScrapperClient extends AbstractClient {
             builder.queryParam("limit", request.limit());
         }
 
-        return builder.build();
+        return builder.build(tgChatId);
     }
 
     // tg-chat-state
