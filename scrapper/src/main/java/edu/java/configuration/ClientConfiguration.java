@@ -2,6 +2,8 @@ package edu.java.configuration;
 
 import edu.java.client.github.GitHubClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
+import edu.java.configuration.properties.GitHubConfig;
+import edu.java.configuration.properties.StackOverflowConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

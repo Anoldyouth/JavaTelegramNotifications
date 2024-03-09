@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.properties;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;

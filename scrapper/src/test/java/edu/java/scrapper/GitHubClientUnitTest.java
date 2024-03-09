@@ -10,9 +10,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.github.dto.request.ListRepositoryEventsRequest;
 import edu.java.client.github.dto.response.RepositoryEvent;
-import edu.java.configuration.GitHubConfig;
+import edu.java.configuration.properties.GitHubConfig;
+import edu.java.exception.ApiException;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -216,15 +218,19 @@ public class GitHubClientUnitTest {
                 }
                 """;
 
-        stubFor(get(urlEqualTo("/repos/owner/repo/events?per_page=5&page=2"))
+        stubFor(get(urlEqualTo("/repos/owner/repo/events?per_page=30&page=1"))
                 .willReturn(aResponse()
                         .withStatus(404)
                         .withHeader("Content-Type", "application/json")
                         .withBody(response)));
 
-        assertThrows(
-                WebClientResponseException.class,
-                () -> client.listRepositoryEvents("owner", "repo", new ListRepositoryEventsRequest())
-        );
+        ApiException exception = (ApiException) catchThrowable(
+                () -> client.listRepositoryEvents(
+                        "owner",
+                        "repo",
+                        new ListRepositoryEventsRequest()
+                )).getCause();
+        assertThat(exception.getCode()).isEqualTo(404);
+        assertThat(exception.getResponseBody()).isEqualTo(response);
     }
 }

@@ -3,7 +3,7 @@ package edu.java.client.github;
 import edu.java.client.AbstractClient;
 import edu.java.client.github.dto.request.ListRepositoryEventsRequest;
 import edu.java.client.github.dto.response.RepositoryEvent;
-import edu.java.configuration.GitHubConfig;
+import edu.java.configuration.properties.GitHubConfig;
 import java.util.List;
 import org.springframework.http.MediaType;
 
