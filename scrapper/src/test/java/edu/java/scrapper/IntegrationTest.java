@@ -1,5 +1,17 @@
 package edu.java.scrapper;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import liquibase.Contexts;
+import liquibase.Liquibase;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.DirectoryResourceAccessor;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
@@ -21,7 +33,19 @@ public abstract class IntegrationTest {
     }
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        // ...
+        Path changelogDirectory = Paths.get("").resolve("src/main/resources/db/changelog/");
+
+        try(Connection connection = DriverManager.getConnection(c.getJdbcUrl(), c.getUsername(), c.getPassword())) {
+            Liquibase liquibase = new Liquibase(
+                    "scrapper-db.yaml",
+                    new DirectoryResourceAccessor(changelogDirectory),
+                    DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection))
+            );
+
+            liquibase.update(new Contexts());
+        } catch (SQLException | LiquibaseException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DynamicPropertySource

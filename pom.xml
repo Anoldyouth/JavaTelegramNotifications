@@ -35,6 +35,10 @@
         <wiremock.version>3.0.1</wiremock.version>
         <jackson-datatype-jsr310.version>2.16.1</jackson-datatype-jsr310.version>
 
+        <!-- Database -->
+        <spring-boot-starter-jdbc.version>3.2.3</spring-boot-starter-jdbc.version>
+        <postgresql.version>42.7.2</postgresql.version>
+
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
@@ -140,6 +144,22 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson-datatype-jsr310.version}</version>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>${spring-boot-starter-jdbc.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
     </dependencies>
 
