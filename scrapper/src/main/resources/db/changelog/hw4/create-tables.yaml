@@ -9,15 +9,9 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
-                  autoIncrement: true
                   constraints:
-                    primaryKey: true
-              - column:
-                  name: tg_chat_id
-                  type: bigint
-                  constraints:
-                    unique: true
                     nullable: false
+                    unique: true
               - column:
                   name: state
                   type: varchar
