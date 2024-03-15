@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Anoldyouth
+      changes:
+        - createTable:
+            tableName: tg_chats
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: state
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: links
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: url
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: last_check_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: tg_chats_links
+            columns:
+              - column:
+                  name: tg_chat_id
+                  type: bigint
+              - column:
+                  name: link_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: tg_chat_id
+            baseTableName: tg_chats_links
+            constraintName: tg_chats_links_tg_chat_id_foreign
+            referencedColumnNames: id
+            referencedTableName: tg_chats
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseColumnNames: link_id
+            baseTableName: tg_chats_links
+            constraintName: tg_chats_links_link_id_foreign
+            referencedColumnNames: id
+            referencedTableName: links
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: tg_chats_links
+        - dropTable:
+            tableName: links
+        - dropTable:
+            tableName: tg_chats
