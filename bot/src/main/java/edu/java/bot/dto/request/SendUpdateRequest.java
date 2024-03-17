@@ -6,11 +6,6 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 public record SendUpdateRequest(
-        @Schema(description = "Идентификатор обновления", example = "1")
-        @NotNull
-        @Positive
-        long id,
-
         @Schema(nullable = true, example = "https://api.github.com")
         String url,
 

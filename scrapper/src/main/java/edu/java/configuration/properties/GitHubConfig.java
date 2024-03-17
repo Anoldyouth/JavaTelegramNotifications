@@ -8,6 +8,8 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "github-client", ignoreUnknownFields = false)
 public record GitHubConfig(
         @NotEmpty
-        String baseUrl
+        String baseUrl,
+
+        int perPage
 ) {
 }

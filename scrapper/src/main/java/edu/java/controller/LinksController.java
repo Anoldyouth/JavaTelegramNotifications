@@ -6,7 +6,6 @@ import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.dto.response.link.LinkResponse;
 import edu.java.dto.response.link.OffsetPagination;
 import edu.java.dto.response.link.SearchLinksResponse;
-import edu.java.util.PaginationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -59,14 +58,6 @@ public class LinksController {
             @Positive
             long tgChatId,
 
-            @Parameter(
-                    description = "Тип пагинации",
-                    example = "OFFSET",
-                    schema = @Schema(implementation = PaginationType.class)
-            )
-            @RequestParam(required = false)
-            PaginationType type,
-
             @Schema(
             )
             @Parameter(
@@ -77,13 +68,6 @@ public class LinksController {
             Long offset,
 
             @Parameter(
-                    description = "Курсор",
-                    example = "yJpZCI6MTAsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
-            )
-            @RequestParam(required = false)
-            String cursor,
-
-            @Parameter(
                     description = "Лимит",
                     example = "20"
             )
@@ -92,7 +76,7 @@ public class LinksController {
     ) {
         return ResponseEntity.ok().body(new SearchLinksResponse(
                 List.of(),
-                new OffsetPagination(PaginationType.OFFSET, 1, 1, 1)
+                new OffsetPagination(1, 1, 1, 1)
         ));
     }
 

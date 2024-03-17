@@ -6,6 +6,7 @@ app:
 
 github-client:
   base-url: ${GITHUB_BASE_URL:"https://api.github.com"}
+  per-page: 50
 
 stack-overflow-client:
   base-url: ${STACK_OVERFLOW_BASE_URL:"https://api.stackexchange.com/2.3"}
