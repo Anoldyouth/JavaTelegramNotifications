@@ -10,7 +10,7 @@ public record SearchLinksResponse(
         List<LinkResponse> links,
 
         @NotNull
-        @Schema(description = "Пагинация", oneOf = {OffsetPagination.class, CursorPagination.class})
-        Pagination pagination
+        @Schema(description = "Пагинация")
+        OffsetPagination pagination
 ) {
 }

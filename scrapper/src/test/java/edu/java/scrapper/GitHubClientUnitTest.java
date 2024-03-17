@@ -18,10 +18,8 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 public class GitHubClientUnitTest {
     private WireMockServer wireMockServer;
@@ -33,7 +31,7 @@ public class GitHubClientUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        client = new GitHubClient(new GitHubConfig("http://localhost:" + wireMockServer.port()));
+        client = new GitHubClient(new GitHubConfig("http://localhost:" + wireMockServer.port(), 50));
     }
 
     @AfterEach
