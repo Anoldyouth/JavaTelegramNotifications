@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
+    private static final String FILTER = "!.D4(1w)YlipX6OPO1pl1(bIhbp*I9AKZhioPZfjMspO8hRG.8djruHpSgxZ-l_ekoulUVCR3mfn";
+
     @Autowired
     StackOverflowClient client;
 
@@ -43,7 +45,7 @@ public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
 
         GetQuestionsByIdsRequest request = new GetQuestionsByIdsRequest();
         request.setPageSize(1);
-        request.setFilter("");
+        request.setFilter(FILTER);
 
         Question question = client.getQuestionsByIds(new int[]{questionId}, request).getFirst();
 
