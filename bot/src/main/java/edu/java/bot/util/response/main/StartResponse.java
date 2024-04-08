@@ -1,12 +1,11 @@
-package edu.java.bot.util.response;
+package edu.java.bot.util.response.main;
 
-import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.CommandEnum;
+import edu.java.bot.util.response.ResponseData;
 
-public class StartResponse extends AbstractResponse {
-
-    public StartResponse(Update update) {
-        super(update);
+public class StartResponse extends MainScenarioAbstractResponse {
+    public StartResponse(long chatId) {
+        super(chatId);
     }
 
     @Override
@@ -16,6 +15,6 @@ public class StartResponse extends AbstractResponse {
                 + "На данный момент поддерживается только GitHub и StackOverFlow.\n\n"
                 + CommandEnum.HELP.getCommand() + " - вывести список команд";
 
-        return new ResponseData(createMessageRequest(message), getCommands());
+        return new ResponseData(createMessageRequest(message), getCommands(), false);
     }
 }

@@ -6,6 +6,8 @@ import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.dto.response.link.LinkResponse;
 import edu.java.dto.response.link.OffsetPagination;
 import edu.java.dto.response.link.SearchLinksResponse;
+import edu.java.exception.NotFoundException;
+import edu.java.service.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @Tag(name = "links")
-@RequestMapping("/links")
+@RequestMapping("/links/{tgChatId}")
+@RequiredArgsConstructor
 public class LinksController {
+    private final LinkService linkService;
+
     @Operation(summary = "Получить отслеживаемые ссылки", operationId = "searchLinks")
     @ApiResponse(
             responseCode = "200",
@@ -47,7 +52,7 @@ public class LinksController {
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
-    @GetMapping("/{tgChatId}")
+    @GetMapping
     public ResponseEntity<SearchLinksResponse> search(
             @Parameter(
                     description = "Идентификатор чата",
@@ -58,25 +63,25 @@ public class LinksController {
             @Positive
             long tgChatId,
 
-            @Schema(
-            )
             @Parameter(
                     description = "Смещение",
                     example = "20"
             )
-            @RequestParam(required = false)
+            @RequestParam(required = false, defaultValue = "0")
             Long offset,
 
             @Parameter(
                     description = "Лимит",
                     example = "20"
             )
-            @RequestParam(required = false)
-            Integer limit
+            @RequestParam(required = false, defaultValue = "20")
+            Long limit
     ) {
+        var result = linkService.listAll(tgChatId, offset, limit);
+
         return ResponseEntity.ok().body(new SearchLinksResponse(
-                List.of(),
-                new OffsetPagination(1, 1, 1, 1)
+                result.links().stream().map(link -> new LinkResponse(link.id(), link.url())).toList(),
+                new OffsetPagination(offset, result.count(), limit)
         ));
     }
 
@@ -97,8 +102,13 @@ public class LinksController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
     @PostMapping
-    public ResponseEntity<LinkResponse> create(@RequestBody @Valid CreateLinkRequest request) {
-        return ResponseEntity.ok().body(new LinkResponse(request.tgChatId(), request.link()));
+    public ResponseEntity<LinkResponse> create(
+            @PathVariable @Positive long tgChatId,
+            @RequestBody @Valid CreateLinkRequest request
+    ) {
+        var link = linkService.add(tgChatId, request.link());
+
+        return ResponseEntity.ok().body(new LinkResponse(link.id(), link.url()));
     }
 
     @Operation(summary = "Убрать отслеживание ссылки", operationId = "deleteLink")
@@ -123,7 +133,12 @@ public class LinksController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<LinkResponse> delete(@PathVariable @Positive long id) {
-        return ResponseEntity.ok().body(new LinkResponse(id, "https://api.github.com"));
+    public ResponseEntity<LinkResponse> delete(
+            @PathVariable @Positive long tgChatId,
+            @PathVariable @Positive long id
+    ) throws NotFoundException {
+        var link = linkService.remove(tgChatId, id);
+
+        return ResponseEntity.ok().body(new LinkResponse(link.id(), link.url()));
     }
 }

@@ -7,47 +7,47 @@ import lombok.Generated;
 
 @Generated
 public record GitHubApp(
-    int id,
+        long id,
 
-    String slug,
+        String slug,
 
-    @JsonProperty("node_id")
-    String nodeId,
+        @JsonProperty("node_id")
+        String nodeId,
 
-    SimpleUser owner,
+        SimpleUser owner,
 
-    String name,
+        String name,
 
-    String description,
+        String description,
 
-    @JsonProperty("external_url")
-    String externalUrl,
+        @JsonProperty("external_url")
+        String externalUrl,
 
-    @JsonProperty("html_url")
-    String htmlUrl,
+        @JsonProperty("html_url")
+        String htmlUrl,
 
-    @JsonProperty("created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    OffsetDateTime createdAt,
+        @JsonProperty("created_at")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+        OffsetDateTime createdAt,
 
-    @JsonProperty("updated_at")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    OffsetDateTime updatedAt,
+        @JsonProperty("updated_at")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+        OffsetDateTime updatedAt,
 
-    String[] events,
+        String[] events,
 
-    @JsonProperty("installations_count")
-    int installationsCount,
+        @JsonProperty("installations_count")
+        int installationsCount,
 
-    @JsonProperty("client_id")
-    String clientId,
+        @JsonProperty("client_id")
+        String clientId,
 
-    @JsonProperty("client_secret")
-    String clientSecret,
+        @JsonProperty("client_secret")
+        String clientSecret,
 
-    @JsonProperty("webhook_secret")
-    String webhookSecret,
+        @JsonProperty("webhook_secret")
+        String webhookSecret,
 
-    String pem
+        String pem
 ) {
 }

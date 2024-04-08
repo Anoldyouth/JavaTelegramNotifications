@@ -2,6 +2,7 @@ package edu.java.service.jdbc;
 
 import edu.java.dao.JdbcLinkDao;
 import edu.java.dao.JdbcTgChatLinkDao;
+import edu.java.exception.NotFoundException;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.net.URI;
@@ -24,12 +25,16 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     @Transactional
-    public Link remove(long tgChatId, long linkId) {
-        tgChatLinkDao.remove(tgChatId, linkId);
-
+    public Link remove(long tgChatId, long linkId) throws NotFoundException {
         Link link = linkDao.getOneById(linkId);
 
-        if (linkDao.findAll(tgChatId, 0, 1).count() == 0) {
+        if (link == null) {
+            throw new NotFoundException();
+        }
+
+        tgChatLinkDao.remove(tgChatId, linkId);
+
+        if (tgChatLinkDao.getTgChatIdsByLinkId(linkId).isEmpty()) {
             linkDao.remove(linkId);
         }
 
@@ -37,7 +42,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public Link.FindAllResult listAll(long tgChatId, int offset, int limit) {
+    public Link.FindAllResult listAll(long tgChatId, long offset, long limit) {
         return linkDao.findAll(tgChatId, offset, limit);
     }
 }

@@ -19,7 +19,7 @@ public class UnknownActionUnitTest {
     void anyMessage() {
         var update = ActionHelper.makeMockUpdateEmpty();
 
-        var response = action.apply(update);
+        var response = action.apply(update, 1);
 
         assertThat(response).isNotNull();
         Assertions.assertTrue(((String) response.request().getParameters().get("text"))

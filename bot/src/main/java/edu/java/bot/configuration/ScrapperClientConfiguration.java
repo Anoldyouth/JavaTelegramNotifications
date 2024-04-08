@@ -12,7 +12,7 @@ public class ScrapperClientConfiguration {
     private final ScrapperConfig scrapperConfig;
 
     @Bean
-    public ScrapperClient botClient() {
+    public ScrapperClient scrapperClient() {
         return new ScrapperClient(scrapperConfig);
     }
 }

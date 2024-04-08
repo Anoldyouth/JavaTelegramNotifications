@@ -7,7 +7,7 @@ import lombok.Generated;
 
 @Generated
 public record Milestone(
-    int id,
+        long id,
 
     @JsonProperty("node_id")
     String nodeId,

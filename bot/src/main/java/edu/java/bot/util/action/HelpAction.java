@@ -2,8 +2,8 @@ package edu.java.bot.util.action;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.CommandEnum;
-import edu.java.bot.util.response.HelpResponse;
 import edu.java.bot.util.response.ResponseData;
+import edu.java.bot.util.response.main.HelpResponse;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,6 @@ public class HelpAction extends AbstractAction {
             return Optional.empty();
         }
 
-        return Optional.of(new HelpResponse(update).makeResponse());
+        return Optional.of(new HelpResponse(chatId).makeResponse());
     }
 }

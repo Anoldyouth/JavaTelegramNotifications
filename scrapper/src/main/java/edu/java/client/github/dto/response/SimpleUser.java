@@ -9,66 +9,66 @@ import lombok.Generated;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Generated
 public record SimpleUser(
-    int id,
+        long id,
 
-    String login,
+        String login,
 
-    String name,
+        String name,
 
-    String email,
+        String email,
 
-    @JsonProperty("node_id")
-    String nodeId,
+        @JsonProperty("node_id")
+        String nodeId,
 
-    @JsonProperty("display_login")
-    String displayLogin,
+        @JsonProperty("display_login")
+        String displayLogin,
 
-    @JsonProperty("gravatar_id")
-    String gravatarId,
+        @JsonProperty("gravatar_id")
+        String gravatarId,
 
-    String url,
+        String url,
 
-    @JsonProperty("avatar_url")
-    String avatarUrl,
+        @JsonProperty("avatar_url")
+        String avatarUrl,
 
-    @JsonProperty("html_url")
-    String htmlUrl,
+        @JsonProperty("html_url")
+        String htmlUrl,
 
-    @JsonProperty("followers_url")
-    String followersUrl,
+        @JsonProperty("followers_url")
+        String followersUrl,
 
-    @JsonProperty("following_url")
-    String followingUrl,
+        @JsonProperty("following_url")
+        String followingUrl,
 
-    @JsonProperty("gists_url")
-    String gistsUrl,
+        @JsonProperty("gists_url")
+        String gistsUrl,
 
-    @JsonProperty("starred_url")
-    String starredUrl,
+        @JsonProperty("starred_url")
+        String starredUrl,
 
-    @JsonProperty("subscriptions_url")
-    String subscriptionsUrl,
+        @JsonProperty("subscriptions_url")
+        String subscriptionsUrl,
 
-    @JsonProperty("organizations_url")
-    String organizationsUrl,
+        @JsonProperty("organizations_url")
+        String organizationsUrl,
 
-    @JsonProperty("repos_url")
-    String reposUrl,
+        @JsonProperty("repos_url")
+        String reposUrl,
 
-    @JsonProperty("events_url")
-    String eventsUrl,
+        @JsonProperty("events_url")
+        String eventsUrl,
 
-    @JsonProperty("received_events_url")
-    String receivedEventsUrl,
+        @JsonProperty("received_events_url")
+        String receivedEventsUrl,
 
-    @JsonProperty("type")
-    String type,
+        @JsonProperty("type")
+        String type,
 
-    @JsonProperty("site_admin")
-    boolean siteAdmin,
+        @JsonProperty("site_admin")
+        boolean siteAdmin,
 
-    @JsonProperty("starred_at")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    OffsetDateTime starredAt
+        @JsonProperty("starred_at")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+        OffsetDateTime starredAt
 ) {
 }

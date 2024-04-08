@@ -2,12 +2,14 @@ package edu.java.controller;
 
 import edu.java.dto.response.exception.ApiErrorResponse;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
+import edu.java.service.TgChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Tag(name = "tg-chat")
 @RequestMapping("/tg-chat/{id}")
+@RequiredArgsConstructor
 public class TgChatController {
+    private final TgChatService tgChatService;
+
     @Operation(summary = "Зарегистрировать чат", operationId = "createTgChat")
     @ApiResponse(responseCode = "200", description = "Чат зарегистрирован")
     @ApiResponse(
@@ -34,6 +39,7 @@ public class TgChatController {
     )
     @PostMapping
     public void create(@PathVariable @Positive long id) {
+        tgChatService.register(id);
     }
 
     @Operation(summary = "Удалить чат", operationId = "deleteTgChat")
@@ -50,5 +56,6 @@ public class TgChatController {
     )
     @DeleteMapping
     public void delete(@PathVariable @Positive long id) {
+        tgChatService.unregister(id);
     }
 }

@@ -1,6 +1,7 @@
 package edu.java.client.stackoverflow.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.Generated;
 
 @Generated
@@ -8,7 +9,7 @@ public record Collective(
     String description,
 
     @JsonProperty("external_links")
-    CollectiveExternalLink[] externalLinks,
+    List<CollectiveExternalLink> externalLinks,
 
     String link,
 
@@ -16,6 +17,6 @@ public record Collective(
 
     String slug,
 
-    String[] tags
+    List<String> tags
 ) {
 }

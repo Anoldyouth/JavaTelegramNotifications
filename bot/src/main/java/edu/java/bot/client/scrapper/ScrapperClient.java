@@ -38,20 +38,20 @@ public class ScrapperClient extends AbstractClient {
     }
 
     // links
-    public LinkResponse createLink(CreateLinkRequest request) {
+    public LinkResponse createLink(long tgChatId, CreateLinkRequest request) {
         return this.webClient
                 .post()
-                .uri("/links")
+                .uri("/links/{tgChatId}", tgChatId)
                 .body(Mono.just(request), CreateLinkRequest.class)
                 .retrieve()
                 .bodyToMono(LinkResponse.class)
                 .block();
     }
 
-    public LinkResponse deleteLink(long id) {
+    public LinkResponse deleteLink(long tgChatId, long id) {
         return this.webClient
                 .delete()
-                .uri("/links/{id}", id)
+                .uri("/links/{tgChatId}/{id}", tgChatId, id)
                 .retrieve()
                 .bodyToMono(LinkResponse.class)
                 .block();
@@ -69,16 +69,8 @@ public class ScrapperClient extends AbstractClient {
     private URI prepareSearchLinks(UriBuilder builder, long tgChatId, SearchLinksRequest request) {
         builder.path("/links/{tgChatId}");
 
-        if (request.type() != null) {
-            builder.queryParam("type", request.type());
-        }
-
         if (request.offset() != null) {
             builder.queryParam("offset", request.offset());
-        }
-
-        if (request.cursor() != null) {
-            builder.queryParam("cursor", request.cursor());
         }
 
         if (request.limit() != null) {

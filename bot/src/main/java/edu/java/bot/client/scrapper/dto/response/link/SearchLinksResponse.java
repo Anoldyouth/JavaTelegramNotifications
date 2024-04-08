@@ -1,7 +1,9 @@
 package edu.java.bot.client.scrapper.dto.response.link;
 
+import java.util.List;
+
 public record SearchLinksResponse(
-        LinkResponse[] links,
-        Pagination pagination
+        List<LinkResponse> links,
+        OffsetPagination pagination
 ) {
 }

@@ -1,12 +1,13 @@
 package edu.java.client.stackoverflow.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.Generated;
 
 @Generated
 public record ClosedDetails(
     @JsonProperty("by_users")
-    ShallowUser[] byUsers,
+    List<ShallowUser> byUsers,
 
     String description,
 
@@ -14,7 +15,7 @@ public record ClosedDetails(
     boolean onHold,
 
     @JsonProperty("original_questions")
-    OriginalQuestion[] originalQuestions,
+    List<OriginalQuestion> originalQuestions,
 
     String reason
 ) {

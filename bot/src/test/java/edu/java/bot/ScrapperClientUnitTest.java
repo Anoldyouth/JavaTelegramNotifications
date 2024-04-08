@@ -13,10 +13,9 @@ import edu.java.bot.client.scrapper.ScrapperClient;
 import edu.java.bot.client.scrapper.dto.request.link.CreateLinkRequest;
 import edu.java.bot.client.scrapper.dto.request.link.SearchLinksRequest;
 import edu.java.bot.client.scrapper.dto.request.tg_chat_state.ReplaceTgChatStateRequest;
-import edu.java.bot.client.scrapper.dto.response.link.CursorPagination;
-import edu.java.bot.client.scrapper.dto.response.link.OffsetPagination;
 import edu.java.bot.configuration.properties.ScrapperConfig;
 import edu.java.bot.exception.ApiException;
+import edu.java.bot.util.ScenarioDispatcher;
 import java.net.URI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -121,7 +120,7 @@ public class ScrapperClientUnitTest {
 
     @Test
     public void createLinkSuccess() {
-        var request = new CreateLinkRequest(1L, URI.create("https://api.github.com"));
+        var request = new CreateLinkRequest(URI.create("https://api.github.com"));
         var response = """
                 {
                   "id": 1,
@@ -129,21 +128,21 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(post(urlEqualTo("/links"))
+        stubFor(post(urlEqualTo("/links/1"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(response)
                 ));
 
-        var clientResponse = client.createLink(request);
+        var clientResponse = client.createLink(1L, request);
         assertThat(clientResponse.id()).isEqualTo(1L);
         assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
     }
 
     @Test
     public void createLinkError() {
-        var request = new CreateLinkRequest(1L, URI.create("https://api.github.com"));
+        var request = new CreateLinkRequest(URI.create("https://api.github.com"));
         var errorResponse = """
                 {
                   "description": "Validation Error",
@@ -157,21 +156,21 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(post(urlEqualTo("/links"))
+        stubFor(post(urlEqualTo("/links/1"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")
                         .withBody(errorResponse)
                 ));
 
-        ApiException exception = (ApiException) catchThrowable(() -> client.createLink(request)).getCause();
+        ApiException exception = (ApiException) catchThrowable(() -> client.createLink(1L, request)).getCause();
         assertThat(exception.getCode()).isEqualTo(400);
         assertThat(exception.getResponseBody()).isEqualTo(errorResponse);
     }
 
     @Test
-    public void searchLinksOffsetSuccess() {
-        var request = new SearchLinksRequest("OFFSET", 1L, null, 20);
+    public void searchLinksSuccess() {
+        var request = new SearchLinksRequest(1L, 20L);
         var response = """
                 {
                   "links": [
@@ -189,7 +188,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(get(urlEqualTo("/links/1?type=OFFSET&offset=1&limit=20"))
+        stubFor(get(urlEqualTo("/links/1?offset=1&limit=20"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -197,48 +196,12 @@ public class ScrapperClientUnitTest {
                 ));
 
         var clientResponse = client.searchLinks(1, request);
-        assertThat(clientResponse.links().length).isEqualTo(1);
-        assertThat(clientResponse.pagination()).isInstanceOf(OffsetPagination.class);
-        assertThat(clientResponse.pagination()).isNotInstanceOf(CursorPagination.class);
-    }
-
-    @Test
-    public void searchLinksCursorSuccess() {
-        var request = new SearchLinksRequest("CURSOR", null, "test", 20);
-        var response = """
-                {
-                  "links": [
-                    {
-                      "id": 1,
-                      "url": "https://api.github.com"
-                    }
-                  ],
-                  "pagination": {
-                      "type": "CURSOR",
-                      "cursor": "cursor",
-                      "previousCursor": "previousCursor",
-                      "nextCursor": "nextCursor",
-                      "limit": 20
-                  }
-                }
-                """;
-
-        stubFor(get(urlEqualTo("/links/1?type=CURSOR&cursor=test&limit=20"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(response)
-                ));
-
-        var clientResponse = client.searchLinks(1, request);
-        assertThat(clientResponse.links().length).isEqualTo(1);
-        assertThat(clientResponse.pagination()).isInstanceOf(CursorPagination.class);
-        assertThat(clientResponse.pagination()).isNotInstanceOf(OffsetPagination.class);
+        assertThat(clientResponse.links().size()).isEqualTo(1);
     }
 
     @Test
     public void searchLinksError() {
-        var request = new SearchLinksRequest("OFFSET", 1L, null, 20);
+        var request = new SearchLinksRequest(1L, 20L);
         var errorResponse = """
                 {
                   "description": "Validation Error",
@@ -252,7 +215,7 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(get(urlEqualTo("/links/1?type=OFFSET&offset=1&limit=20"))
+        stubFor(get(urlEqualTo("/links/1?offset=1&limit=20"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")
@@ -273,14 +236,14 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(delete(urlEqualTo("/links/1"))
+        stubFor(delete(urlEqualTo("/links/2/1"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(response)
                 ));
 
-        var clientResponse = client.deleteLink(1);
+        var clientResponse = client.deleteLink(2, 1);
         assertThat(clientResponse.id()).isEqualTo(1L);
         assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
     }
@@ -300,14 +263,14 @@ public class ScrapperClientUnitTest {
                 }
                 """;
 
-        stubFor(delete(urlEqualTo("/links/1"))
+        stubFor(delete(urlEqualTo("/links/2/1"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")
                         .withBody(errorResponse)
                 ));
 
-        ApiException exception = (ApiException) catchThrowable(() -> client.deleteLink(1L)).getCause();
+        ApiException exception = (ApiException) catchThrowable(() -> client.deleteLink(2, 1)).getCause();
         assertThat(exception.getCode()).isEqualTo(400);
         assertThat(exception.getResponseBody()).isEqualTo(errorResponse);
     }
@@ -317,7 +280,7 @@ public class ScrapperClientUnitTest {
         var response = """
                 {
                   "tgChatId": 1,
-                  "state": 1
+                  "state": "MAIN"
                 }
                 """;
 
@@ -330,7 +293,7 @@ public class ScrapperClientUnitTest {
 
         var clientResponse = client.getTgChatState(1);
         assertThat(clientResponse.tgChatId()).isEqualTo(1L);
-        assertThat(clientResponse.state()).isEqualTo((short) 1);
+        assertThat(clientResponse.state()).isEqualTo(ScenarioDispatcher.ScenarioType.MAIN);
     }
 
     @Test
@@ -362,11 +325,11 @@ public class ScrapperClientUnitTest {
 
     @Test
     public void replaceTgChatStateSuccess() {
-        var request = new ReplaceTgChatStateRequest((short) 1);
+        var request = new ReplaceTgChatStateRequest(ScenarioDispatcher.ScenarioType.MAIN);
         var response = """
                 {
                   "tgChatId": 1,
-                  "state": 1
+                  "state": "MAIN"
                 }
                 """;
 
@@ -379,12 +342,12 @@ public class ScrapperClientUnitTest {
 
         var clientResponse = client.replaceTgChatState(1, request);
         assertThat(clientResponse.tgChatId()).isEqualTo(1L);
-        assertThat(clientResponse.state()).isEqualTo((short) 1);
+        assertThat(clientResponse.state()).isEqualTo(ScenarioDispatcher.ScenarioType.MAIN);
     }
 
     @Test
     public void replaceTgChatStateError() {
-        var request = new ReplaceTgChatStateRequest((short) 1);
+        var request = new ReplaceTgChatStateRequest(ScenarioDispatcher.ScenarioType.MAIN);
         var errorResponse = """
                 {
                   "description": "Validation Error",

@@ -13,4 +13,5 @@ public record SearchLinksResponse(
         @Schema(description = "Пагинация")
         OffsetPagination pagination
 ) {
+
 }

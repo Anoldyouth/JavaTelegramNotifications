@@ -43,7 +43,8 @@ public class JdbcLinkDao {
                     INSERT INTO tg_chats_links (tg_chat_id, link_id)
                     SELECT ?, id
                     FROM links
-                    WHERE url = ?;
+                    WHERE url = ?
+                    ON CONFLICT DO NOTHING;
                     """);
             preparedStatement.setLong(1, tgChatId);
             preparedStatement.setString(2, url.toString());
@@ -53,14 +54,14 @@ public class JdbcLinkDao {
     }
 
     public void remove(long id) {
-        jdbcTemplate.update("DELETE FROM links WHERE id = ?", 1);
+        jdbcTemplate.update("DELETE FROM links WHERE id = ?", id);
     }
 
     @Transactional
     public Link.FindAllResult findAll(
             long tgChatId,
-            int offset,
-            int limit
+            long offset,
+            long limit
     ) {
         String query = """
                 SELECT l.*
@@ -75,8 +76,8 @@ public class JdbcLinkDao {
                 query,
                 preparedStatement -> {
                     preparedStatement.setLong(1, tgChatId);
-                    preparedStatement.setInt(2, offset);
-                    preparedStatement.setInt(3, limit);
+                    preparedStatement.setLong(2, offset);
+                    preparedStatement.setLong(3, limit);
                 },
                 new LinkRowMapper());
 

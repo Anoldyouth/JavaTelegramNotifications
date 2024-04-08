@@ -1,11 +1,12 @@
-package edu.java.bot.util.response;
+package edu.java.bot.util.response.main;
 
-import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.CommandEnum;
+import edu.java.bot.util.response.ResponseData;
 
-public class HelpResponse extends AbstractResponse {
-    public HelpResponse(Update update) {
-        super(update);
+public class HelpResponse extends MainScenarioAbstractResponse {
+
+    public HelpResponse(long chatId) {
+        super(chatId);
     }
 
     @Override
@@ -16,6 +17,6 @@ public class HelpResponse extends AbstractResponse {
                 + CommandEnum.UNTRACK.getCommand() + " - " + CommandEnum.UNTRACK.getDescription() + "\n"
                 + CommandEnum.LIST.getCommand() + " - " + CommandEnum.LIST.getDescription() + "\n";
 
-        return new ResponseData(createMessageRequest(message), getCommands());
+        return new ResponseData(createMessageRequest(message), getCommands(), false);
     }
 }

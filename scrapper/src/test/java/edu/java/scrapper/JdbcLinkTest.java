@@ -171,4 +171,64 @@ public class JdbcLinkTest extends IntegrationTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.getFirst().id()).isEqualTo(1);
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    void getOneByIdTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var link = linkDao.getOneById(1);
+
+        assertThat(link.url().toString()).isEqualTo("https://github.com/Anoldyouth/Java-Telegram-Notifications");
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void getOneByUrlTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var link = linkDao.getOneByUrl(URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications"));
+
+        assertThat(link.id()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void updateTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var lastCheckAt = OffsetDateTime.parse("2024-01-01T00:00:00+00:00");
+
+        linkDao.update(1, lastCheckAt);
+        var link = linkDao.getOneById(1);
+
+        assertThat(link.lastCheckAt()).isEqualTo(lastCheckAt);
+    }
 }

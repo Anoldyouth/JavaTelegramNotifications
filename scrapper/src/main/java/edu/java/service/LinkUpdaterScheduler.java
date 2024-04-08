@@ -18,6 +18,8 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
+        LOGGER.info("LinkUpdaterScheduler стартовал");
+
         int count = linkUpdater.update();
 
         LOGGER.info("Проверено ссылок: " + count);
