@@ -1,10 +1,10 @@
-package edu.java.service.jdbc;
+package edu.java.service.jpa;
 
 import edu.java.client.bot.BotClient;
 import edu.java.client.bot.dto.request.SendUpdatesRequest;
-import edu.java.dao.jdbc.JdbcLinkDao;
-import edu.java.dao.jdbc.JdbcTgChatLinkDao;
-import edu.java.model.Link;
+import edu.java.dao.jpa.JpaLinkRepository;
+import edu.java.dao.jpa.entity.LinkEntity;
+import edu.java.dao.jpa.entity.TgChatEntity;
 import edu.java.service.LinkUpdater;
 import edu.java.util.GithubUpdatesExtractor;
 import edu.java.util.StackOverflowUpdatesExtractor;
@@ -15,13 +15,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.PageRequest;
 
 @RequiredArgsConstructor
-public class JdbcLinkUpdater implements LinkUpdater {
+public class JpaLinkUpdater implements LinkUpdater {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final JdbcLinkDao linkDao;
 
-    private final JdbcTgChatLinkDao tgChatLinkDao;
+    private final JpaLinkRepository linkRepository;
 
     private final BotClient botClient;
 
@@ -32,17 +32,17 @@ public class JdbcLinkUpdater implements LinkUpdater {
     @Override
     public int update() {
         OffsetDateTime timestamp = OffsetDateTime.now();
-        int offset = 0;
+        int page = 0;
         int count = 0;
 
         while (true) {
-            List<Link> links = linkDao.getAllWhereLastCheckAtBefore(timestamp, offset, LIMIT);
+            List<LinkEntity> links = linkRepository.findByCreatedAtLessThan(timestamp, PageRequest.of(page, LIMIT));
 
             if (links == null || links.isEmpty()) {
                 break;
             }
 
-            for (Link link : links) {
+            for (LinkEntity link : links) {
                 try {
                     linkUpdates(link, timestamp);
                 } catch (Exception exception) {
@@ -52,24 +52,25 @@ public class JdbcLinkUpdater implements LinkUpdater {
             }
 
             count += links.size();
-            offset += links.size();
+            page++;
         }
 
         return count;
     }
 
-    private void linkUpdates(Link link, OffsetDateTime timestamp) {
-        List<UpdatesExtractor.Update> updates = getUpdatesExtractor(link.url())
-                .getUpdates(link.url(), link.lastCheckAt());
+    private void linkUpdates(LinkEntity link, OffsetDateTime timestamp) {
+        List<UpdatesExtractor.Update> updates = getUpdatesExtractor(link.getUrl())
+                .getUpdates(link.getUrl(), link.getLastCheckAt());
 
-        List<Long> tgChatIds = tgChatLinkDao.getTgChatIdsByLinkId(link.id());
+        List<Long> tgChatIds = link.getChats().stream().map(TgChatEntity::getId).toList();
 
         for (UpdatesExtractor.Update update : updates) {
             SendUpdatesRequest request = new SendUpdatesRequest(update.url(), update.message(), tgChatIds);
             botClient.updates(request);
         }
 
-        linkDao.update(link.id(), timestamp);
+        link.setCreatedAt(timestamp);
+        linkRepository.saveAndFlush(link);
     }
 
     private UpdatesExtractor getUpdatesExtractor(URI url) {

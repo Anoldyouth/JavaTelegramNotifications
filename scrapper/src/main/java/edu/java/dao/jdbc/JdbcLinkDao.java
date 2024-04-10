@@ -1,6 +1,7 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
 import edu.java.model.Link;
+import edu.java.service.LinkService;
 import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,7 +59,7 @@ public class JdbcLinkDao {
     }
 
     @Transactional
-    public Link.FindAllResult findAll(
+    public LinkService.FindAllResult findAll(
             long tgChatId,
             long offset,
             long limit
@@ -85,7 +86,7 @@ public class JdbcLinkDao {
 
         long total = jdbcTemplate.queryForObject(countQuery, Long.class);
 
-        return new Link.FindAllResult(result, total);
+        return new LinkService.FindAllResult(result, total);
     }
 
     public List<Link> getAllWhereLastCheckAtBefore(

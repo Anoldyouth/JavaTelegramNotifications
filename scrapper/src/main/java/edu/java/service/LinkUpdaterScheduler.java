@@ -1,6 +1,5 @@
 package edu.java.service;
 
-import edu.java.service.jdbc.JdbcLinkUpdater;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class LinkUpdaterScheduler {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private final JdbcLinkUpdater linkUpdater;
+    private final LinkUpdater linkUpdater;
 
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {

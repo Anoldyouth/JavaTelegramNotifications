@@ -1,16 +1,14 @@
 package edu.java.service.jdbc;
 
-import edu.java.dao.JdbcLinkDao;
-import edu.java.dao.JdbcTgChatLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
+import edu.java.dao.jdbc.JdbcTgChatLinkDao;
 import edu.java.exception.NotFoundException;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
     private final JdbcLinkDao linkDao;
@@ -42,7 +40,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public Link.FindAllResult listAll(long tgChatId, long offset, long limit) {
+    public FindAllResult listAll(long tgChatId, long offset, long limit) {
         return linkDao.findAll(tgChatId, offset, limit);
     }
 }

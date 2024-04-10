@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
-    private static final String FILTER = "!.D4(1w)YlipblLzxCCZrf.XUloaPKEW-l5FYoEnrw5EEjtWRmU0AhUUU3xApm0WA1RiUblytnpv";
+    public static final String FILTER = "!.D4(1w)YlipblLzxCCZrf.XUloaPKEW-l5FYoEnrw5EEjtWRmU0AhUUU3xApm0WA1RiUblytnpv";
 
     private final StackOverflowClient client;
 

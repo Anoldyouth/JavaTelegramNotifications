@@ -1,8 +1,9 @@
 app:
   scheduler:
-    enabled: true
+    enabled: false
     interval: PT10S
     force-check-delay: 10s
+  database-access-type: jpa
 
 github-client:
   base-url: ${GITHUB_BASE_URL:https://api.github.com}

@@ -1,4 +1,4 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
 import edu.java.model.TgChat;
 import edu.java.util.State;

@@ -1,7 +1,7 @@
 package edu.java.scrapper;
 
 import edu.java.configuration.properties.ApplicationConfig;
-import edu.java.dao.JdbcLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
 import java.net.URI;
 import java.sql.ResultSet;
 import java.time.OffsetDateTime;
@@ -16,7 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-public class JdbcLinkTest extends IntegrationTest {
+public class JdbcLinkDaoTest extends IntegrationTest {
     @Autowired
     private JdbcLinkDao linkDao;
     @Autowired
