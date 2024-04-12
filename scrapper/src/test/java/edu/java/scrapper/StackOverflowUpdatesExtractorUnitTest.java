@@ -10,11 +10,13 @@ import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.configuration.properties.StackOverflowConfig;
 import edu.java.util.StackOverflowUpdatesExtractor;
 import java.net.URI;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 public class StackOverflowUpdatesExtractorUnitTest {
     private WireMockServer wireMockServer;
@@ -26,7 +28,10 @@ public class StackOverflowUpdatesExtractorUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        StackOverflowClient client = new StackOverflowClient(new StackOverflowConfig("http://localhost:" + wireMockServer.port()));
+        StackOverflowClient client = new StackOverflowClient(
+                new StackOverflowConfig("http://localhost:" + wireMockServer.port()),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
         stackOverflowUpdatesExtractor = new StackOverflowUpdatesExtractor(client);
     }
 

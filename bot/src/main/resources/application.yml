@@ -1,5 +1,12 @@
 app:
   telegram-token: ${BOT_TELEGRAM_TOKEN}
+  retry:
+    policy: linear
+    delay: 1s
+    max-attempts: 3
+    interval: 100ms
+    codes:
+      - 500
 
 links-list:
   limit: 1

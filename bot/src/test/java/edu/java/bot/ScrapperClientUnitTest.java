@@ -17,12 +17,14 @@ import edu.java.bot.configuration.properties.ScrapperConfig;
 import edu.java.bot.exception.ApiException;
 import edu.java.bot.util.ScenarioDispatcher;
 import java.net.URI;
+import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 public class ScrapperClientUnitTest {
     private WireMockServer wireMockServer;
@@ -34,7 +36,10 @@ public class ScrapperClientUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        client = new ScrapperClient(new ScrapperConfig("http://localhost:" + wireMockServer.port()));
+        client = new ScrapperClient(
+                new ScrapperConfig("http://localhost:" + wireMockServer.port()),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
     }
 
     @AfterEach

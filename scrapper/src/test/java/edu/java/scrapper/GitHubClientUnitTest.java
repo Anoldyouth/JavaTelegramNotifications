@@ -12,6 +12,7 @@ import edu.java.client.github.dto.request.ListRepositoryEventsRequest;
 import edu.java.client.github.dto.response.RepositoryEvent;
 import edu.java.configuration.properties.GitHubConfig;
 import edu.java.exception.ApiException;
+import java.time.Duration;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 public class GitHubClientUnitTest {
     private WireMockServer wireMockServer;
@@ -31,7 +33,10 @@ public class GitHubClientUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        client = new GitHubClient(new GitHubConfig("http://localhost:" + wireMockServer.port(), 50));
+        client = new GitHubClient(
+                new GitHubConfig("http://localhost:" + wireMockServer.port(), 50),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
     }
 
     @AfterEach

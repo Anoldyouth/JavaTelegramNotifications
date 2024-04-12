@@ -11,11 +11,12 @@ import edu.java.bot.configuration.properties.ScrapperConfig;
 import java.net.URI;
 import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @SuppressWarnings("MultipleStringLiterals")
 public class ScrapperClient extends AbstractClient {
-    public ScrapperClient(ScrapperConfig config) {
-        super(config.baseUrl());
+    public ScrapperClient(ScrapperConfig config, Retry retry) {
+        super(config.baseUrl(), retry);
     }
 
     // tg-chat

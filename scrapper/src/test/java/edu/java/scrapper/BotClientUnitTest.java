@@ -11,6 +11,7 @@ import edu.java.client.bot.dto.request.SendUpdatesRequest;
 import edu.java.configuration.properties.BotConfig;
 import edu.java.exception.ApiException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 public class BotClientUnitTest {
     private WireMockServer wireMockServer;
@@ -35,7 +37,10 @@ public class BotClientUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        client = new BotClient(new BotConfig("http://localhost:" + wireMockServer.port()));
+        client = new BotClient(
+                new BotConfig("http://localhost:" + wireMockServer.port()),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
     }
 
     @AfterEach

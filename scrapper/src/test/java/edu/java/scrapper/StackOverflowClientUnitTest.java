@@ -10,6 +10,7 @@ import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.client.stackoverflow.dto.request.GetQuestionsByIdsRequest;
 import edu.java.client.stackoverflow.dto.response.Response;
 import edu.java.configuration.properties.StackOverflowConfig;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 
 public class StackOverflowClientUnitTest {
@@ -29,7 +31,10 @@ public class StackOverflowClientUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        client = new StackOverflowClient(new StackOverflowConfig("http://localhost:" + wireMockServer.port()));
+        client = new StackOverflowClient(
+                new StackOverflowConfig("http://localhost:" + wireMockServer.port()),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
     }
 
     @AfterEach

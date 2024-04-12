@@ -6,13 +6,18 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 public abstract class AbstractClient {
     protected final WebClient webClient;
 
-    public AbstractClient(String baseUrl) {
+    public AbstractClient(String baseUrl, Retry retry) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
+                .filter((request, next) -> next
+                        .exchange(request)
+                        .retryWhen(retry)
+                )
                 .defaultHeader("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .defaultStatusHandler(
                         status -> status.is4xxClientError() || status.is5xxServerError(),
