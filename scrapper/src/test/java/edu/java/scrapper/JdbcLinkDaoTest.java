@@ -38,8 +38,17 @@ public class JdbcLinkDaoTest extends IntegrationTest {
                 );
                 """);
 
-        linkDao.add(1, URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications"));
-        Boolean contains = jdbcTemplate.query("SELECT * FROM tg_chats_links WHERE link_id = 1", ResultSet::next);
+        var url = URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications");
+
+        linkDao.add(1, url);
+
+        Boolean contains = jdbcTemplate.query(
+                "SELECT * FROM tg_chats_links tcl JOIN links l on l.id = tcl.link_id WHERE l.url = ?",
+                preparedStatement -> {
+                    preparedStatement.setString(1, url.toString());
+                },
+                ResultSet::next
+        );
 
         assertEquals(Boolean.TRUE, contains);
     }
