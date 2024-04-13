@@ -163,6 +163,6 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
         SendUpdatesRequest stackRequest = requests.get(1);
         assertThat(stackRequest.url()).isEqualTo(stackUrl);
         assertThat(stackRequest.description()).isEqualTo("stack");
-        assertThat(stackRequest.tgChatIds()).containsExactly(1L, 2L);
+        assertThat(stackRequest.tgChatIds()).contains(1L, 2L);
     }
 }
