@@ -2,6 +2,7 @@ package edu.java.controller;
 
 import edu.java.dto.request.tg_chat_state.ReplaceTgChatStateRequest;
 import edu.java.dto.response.exception.ApiErrorResponse;
+import edu.java.dto.response.exception.TooManyRequestsResponse;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.dto.response.tg_chat_state.TgChatStateResponse;
 import edu.java.exception.NotFoundException;
@@ -49,6 +50,11 @@ public class TgChatStateController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
     @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
+    )
+    @ApiResponse(
             responseCode = "500",
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
@@ -78,6 +84,11 @@ public class TgChatStateController {
             responseCode = "404",
             description = "Объект не найден",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
     )
     @ApiResponse(
             responseCode = "500",

@@ -29,3 +29,8 @@ logging:
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+bucket:
+  capacity: 100
+  tokens: 1
+  period: 60s

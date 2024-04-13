@@ -30,6 +30,7 @@
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
         <paulschwarz-spring-dotenv.version>4.0.0</paulschwarz-spring-dotenv.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
+        <bucket4j-core.version>7.6.0</bucket4j-core.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
@@ -111,6 +112,12 @@
                 <version>${spring-aspects.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vladimir-bukhtoyarov</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j-core.version}</version>
             </dependency>
 
             <!-- Database -->

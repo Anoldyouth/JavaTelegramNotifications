@@ -1,6 +1,7 @@
 package edu.java.exception;
 
 import edu.java.dto.response.exception.ApiErrorResponse;
+import edu.java.dto.response.exception.TooManyRequestsResponse;
 import edu.java.dto.response.exception.ValidationError;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import java.util.List;
@@ -47,6 +48,11 @@ public class DefaultExceptionHandler {
         );
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<Object> tooManyRequestsResponse(TooManyRequestsException exception) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(new TooManyRequestsResponse());
     }
 
     @ExceptionHandler(Exception.class)

@@ -2,6 +2,7 @@ package edu.java.controller;
 
 import edu.java.dto.request.link.CreateLinkRequest;
 import edu.java.dto.response.exception.ApiErrorResponse;
+import edu.java.dto.response.exception.TooManyRequestsResponse;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.dto.response.link.LinkResponse;
 import edu.java.dto.response.link.OffsetPagination;
@@ -46,6 +47,11 @@ public class LinksController {
             responseCode = "400",
             description = "Некорректные параметры",
             content = @Content(schema = @Schema(implementation = ValidationErrorsResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
     )
     @ApiResponse(
             responseCode = "500",
@@ -97,6 +103,11 @@ public class LinksController {
             content = @Content(schema = @Schema(implementation = ValidationErrorsResponse.class))
     )
     @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
+    )
+    @ApiResponse(
             responseCode = "500",
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
@@ -126,6 +137,11 @@ public class LinksController {
             responseCode = "404",
             description = "Объект не найден",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
     )
     @ApiResponse(
             responseCode = "500",
