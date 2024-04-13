@@ -159,6 +159,10 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
         List<SendUpdatesRequest> requests = captor.getAllValues();
 
         assertThat(requests.get(0)).isEqualTo(new SendUpdatesRequest(githubUrl, "github", List.of(1L)));
-        assertThat(requests.get(1)).isEqualTo(new SendUpdatesRequest(stackUrl, "stack", List.of(1L, 2L)));
+
+        SendUpdatesRequest stackRequest = requests.get(1);
+        assertThat(stackRequest.url()).isEqualTo(stackUrl);
+        assertThat(stackRequest.description()).isEqualTo("stack");
+        assertThat(stackRequest.tgChatIds()).containsExactly(1L, 2L);
     }
 }
