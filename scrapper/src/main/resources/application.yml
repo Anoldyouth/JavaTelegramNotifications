@@ -1,9 +1,10 @@
 app:
   scheduler:
-    enabled: false
+    enabled: true
     interval: PT10S
     force-check-delay: 10s
   database-access-type: jpa
+  link-update-method: kafka
   retry:
     policy: linear
     delay: 1s
@@ -11,6 +12,11 @@ app:
     interval: 100ms
     codes:
       - 500
+  topics:
+    link-update:
+      name: link-update
+      partitions: 1
+      replicas: 1
 
 github-client:
   base-url: ${GITHUB_BASE_URL:https://api.github.com}
@@ -47,3 +53,4 @@ bucket:
   capacity: 100
   tokens: 1
   period: 60s
+

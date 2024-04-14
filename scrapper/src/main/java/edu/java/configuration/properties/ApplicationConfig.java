@@ -11,12 +11,18 @@ public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
     AccessType databaseAccessType,
-    RetryConfig retry
+    RetryConfig retry,
+    TopicsConfig topics,
+    LinkUpdateMethod linkUpdateMethod
 ) {
     public record Scheduler(boolean enabled, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 
     public enum AccessType {
         JDBC, JPA
+    }
+
+    public enum LinkUpdateMethod {
+        CLIENT, KAFKA
     }
 }

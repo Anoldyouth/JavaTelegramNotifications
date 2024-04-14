@@ -1,11 +1,11 @@
 package edu.java.service.jdbc;
 
-import edu.java.client.bot.BotClient;
 import edu.java.client.bot.dto.request.SendUpdatesRequest;
 import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dao.jdbc.JdbcTgChatLinkDao;
 import edu.java.model.Link;
 import edu.java.service.LinkUpdater;
+import edu.java.service.send_link_update.SendLinkUpdate;
 import edu.java.util.GithubUpdatesExtractor;
 import edu.java.util.StackOverflowUpdatesExtractor;
 import edu.java.util.UpdatesExtractor;
@@ -23,7 +23,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
 
     private final JdbcTgChatLinkDao tgChatLinkDao;
 
-    private final BotClient botClient;
+    private final SendLinkUpdate sendLinkUpdate;
 
     private final GithubUpdatesExtractor githubUpdatesExtractor;
 
@@ -43,12 +43,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
             }
 
             for (Link link : links) {
-                try {
-                    linkUpdates(link, timestamp);
-                } catch (Exception exception) {
-                    LOGGER.error(exception);
-                    count--;
-                }
+                linkUpdates(link, timestamp);
             }
 
             count += links.size();
@@ -66,7 +61,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
 
         for (UpdatesExtractor.Update update : updates) {
             SendUpdatesRequest request = new SendUpdatesRequest(update.url(), update.message(), tgChatIds);
-            botClient.updates(request);
+            sendLinkUpdate.send(request);
         }
 
         linkDao.update(link.id(), timestamp);

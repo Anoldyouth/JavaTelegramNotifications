@@ -7,6 +7,11 @@ app:
     interval: 100ms
     codes:
       - 500
+  topics:
+    link-update:
+      name: link-update
+      partitions: 1
+      replicas: 1
 
 links-list:
   limit: 1
