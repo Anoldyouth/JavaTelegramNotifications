@@ -31,8 +31,8 @@ public class KafkaConfiguration {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, DEFAULT_SERVER);
         props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "5000");
 
-        JsonDeserializer<SendUpdateRequest> jsonDeserializer = new JsonDeserializer<>();
-        jsonDeserializer.addTrustedPackages("edu.java.bot.dto.request");
+        JsonDeserializer<SendUpdateRequest> jsonDeserializer = new JsonDeserializer<>(SendUpdateRequest.class);
+        jsonDeserializer.ignoreTypeHeaders();
 
         return new DefaultKafkaConsumerFactory<>(
                 props,
