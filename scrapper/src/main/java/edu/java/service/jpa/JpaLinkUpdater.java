@@ -1,11 +1,11 @@
 package edu.java.service.jpa;
 
-import edu.java.client.bot.BotClient;
 import edu.java.client.bot.dto.request.SendUpdatesRequest;
 import edu.java.dao.jpa.JpaLinkRepository;
 import edu.java.dao.jpa.entity.LinkEntity;
 import edu.java.dao.jpa.entity.TgChatEntity;
 import edu.java.service.LinkUpdater;
+import edu.java.service.send_link_update.SendLinkUpdate;
 import edu.java.util.GithubUpdatesExtractor;
 import edu.java.util.StackOverflowUpdatesExtractor;
 import edu.java.util.UpdatesExtractor;
@@ -23,7 +23,7 @@ public class JpaLinkUpdater implements LinkUpdater {
 
     private final JpaLinkRepository linkRepository;
 
-    private final BotClient botClient;
+    private final SendLinkUpdate sendLinkUpdate;
 
     private final GithubUpdatesExtractor githubUpdatesExtractor;
 
@@ -66,7 +66,7 @@ public class JpaLinkUpdater implements LinkUpdater {
 
         for (UpdatesExtractor.Update update : updates) {
             SendUpdatesRequest request = new SendUpdatesRequest(update.url(), update.message(), tgChatIds);
-            botClient.updates(request);
+            sendLinkUpdate.send(request);
         }
 
         link.setLastCheckAt(timestamp);

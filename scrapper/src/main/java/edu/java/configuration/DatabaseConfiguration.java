@@ -1,6 +1,5 @@
 package edu.java.configuration;
 
-import edu.java.client.bot.BotClient;
 import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dao.jdbc.JdbcTgChatDao;
 import edu.java.dao.jdbc.JdbcTgChatLinkDao;
@@ -15,6 +14,7 @@ import edu.java.service.jdbc.JdbcTgChatService;
 import edu.java.service.jpa.JpaLinkService;
 import edu.java.service.jpa.JpaLinkUpdater;
 import edu.java.service.jpa.JpaTgChatService;
+import edu.java.service.send_link_update.SendLinkUpdate;
 import edu.java.util.GithubUpdatesExtractor;
 import edu.java.util.StackOverflowUpdatesExtractor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,17 +40,17 @@ public class DatabaseConfiguration {
 
         @Bean
         @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
-        public LinkUpdater jdbcKinkUpdater(
+        public LinkUpdater jdbcLinkUpdater(
                 JdbcLinkDao linkDao,
                 JdbcTgChatLinkDao tgChatLinkDao,
-                BotClient botClient,
+                SendLinkUpdate sendLinkUpdate,
                 GithubUpdatesExtractor githubUpdatesExtractor,
                 StackOverflowUpdatesExtractor stackOverflowUpdatesExtractor
         ) {
                 return new JdbcLinkUpdater(
                         linkDao,
                         tgChatLinkDao,
-                        botClient,
+                        sendLinkUpdate,
                         githubUpdatesExtractor,
                         stackOverflowUpdatesExtractor
                 );
@@ -75,13 +75,13 @@ public class DatabaseConfiguration {
         @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
         public LinkUpdater jpaLinkUpdater(
                 JpaLinkRepository linkRepository,
-                BotClient botClient,
+                SendLinkUpdate sendLinkUpdate,
                 GithubUpdatesExtractor githubUpdatesExtractor,
                 StackOverflowUpdatesExtractor stackOverflowUpdatesExtractor
         ) {
                 return new JpaLinkUpdater(
                         linkRepository,
-                        botClient,
+                        sendLinkUpdate,
                         githubUpdatesExtractor,
                         stackOverflowUpdatesExtractor
                 );

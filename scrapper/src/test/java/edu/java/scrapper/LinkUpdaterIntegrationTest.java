@@ -8,6 +8,7 @@ import edu.java.dao.jpa.JpaLinkRepository;
 import edu.java.service.LinkUpdater;
 import edu.java.service.jdbc.JdbcLinkUpdater;
 import edu.java.service.jpa.JpaLinkUpdater;
+import edu.java.service.send_link_update.ClientSendLinkUpdate;
 import edu.java.util.GithubUpdatesExtractor;
 import edu.java.util.StackOverflowUpdatesExtractor;
 import edu.java.util.UpdatesExtractor;
@@ -40,6 +41,7 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
     private JpaLinkRepository linkRepository;
 
     BotClient botClient;
+    ClientSendLinkUpdate sendLinkUpdate;
     GithubUpdatesExtractor githubUpdatesExtractor;
     StackOverflowUpdatesExtractor stackOverflowUpdatesExtractor;
 
@@ -52,6 +54,7 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
     @BeforeEach
     void prepare() {
         botClient = mock(BotClient.class);
+        sendLinkUpdate = new ClientSendLinkUpdate(botClient);
         githubUpdatesExtractor = mock(GithubUpdatesExtractor.class);
         stackOverflowUpdatesExtractor = mock(StackOverflowUpdatesExtractor.class);
     }
@@ -60,7 +63,7 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
     @Transactional
     @Rollback
     void updateJdbc() {
-        LinkUpdater service = new JdbcLinkUpdater(linkDao, tgChatLinkDao, botClient, githubUpdatesExtractor, stackOverflowUpdatesExtractor);
+        LinkUpdater service = new JdbcLinkUpdater(linkDao, tgChatLinkDao, sendLinkUpdate, githubUpdatesExtractor, stackOverflowUpdatesExtractor);
 
         jdbcTemplate.execute("""
                 INSERT INTO links (id, url, last_check_at, created_at)
@@ -113,7 +116,7 @@ public class LinkUpdaterIntegrationTest extends IntegrationTest {
     @Transactional
     @Rollback
     void updateJpa() {
-        LinkUpdater service = new JpaLinkUpdater(linkRepository, botClient, githubUpdatesExtractor, stackOverflowUpdatesExtractor);
+        LinkUpdater service = new JpaLinkUpdater(linkRepository, sendLinkUpdate, githubUpdatesExtractor, stackOverflowUpdatesExtractor);
 
         jdbcTemplate.execute("""
                 INSERT INTO links (id, url, last_check_at, created_at)
