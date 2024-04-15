@@ -1,7 +1,7 @@
 package edu.java.scrapper;
 
 import edu.java.configuration.properties.ApplicationConfig;
-import edu.java.dao.JdbcLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
 import java.net.URI;
 import java.sql.ResultSet;
 import java.time.OffsetDateTime;
@@ -16,7 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-public class JdbcLinkTest extends IntegrationTest {
+public class JdbcLinkDaoTest extends IntegrationTest {
     @Autowired
     private JdbcLinkDao linkDao;
     @Autowired
@@ -38,8 +38,17 @@ public class JdbcLinkTest extends IntegrationTest {
                 );
                 """);
 
-        linkDao.add(1, URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications"));
-        Boolean contains = jdbcTemplate.query("SELECT * FROM tg_chats_links WHERE link_id = 1", ResultSet::next);
+        var url = URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications");
+
+        linkDao.add(1, url);
+
+        Boolean contains = jdbcTemplate.query(
+                "SELECT * FROM tg_chats_links tcl JOIN links l on l.id = tcl.link_id WHERE l.url = ?",
+                preparedStatement -> {
+                    preparedStatement.setString(1, url.toString());
+                },
+                ResultSet::next
+        );
 
         assertEquals(Boolean.TRUE, contains);
     }
@@ -170,5 +179,65 @@ public class JdbcLinkTest extends IntegrationTest {
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.getFirst().id()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void getOneByIdTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var link = linkDao.getOneById(1);
+
+        assertThat(link.url().toString()).isEqualTo("https://github.com/Anoldyouth/Java-Telegram-Notifications");
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void getOneByUrlTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var link = linkDao.getOneByUrl(URI.create("https://github.com/Anoldyouth/Java-Telegram-Notifications"));
+
+        assertThat(link.id()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void updateTest() {
+        jdbcTemplate.execute("""
+                INSERT INTO links (id, url, last_check_at, created_at)
+                VALUES (
+                    1,
+                    'https://github.com/Anoldyouth/Java-Telegram-Notifications',
+                    '2023-03-16 00:37:57.491000 +00:00',
+                    '2023-03-16 00:37:57.491000 +00:00'
+                )
+                """);
+
+        var lastCheckAt = OffsetDateTime.parse("2024-01-01T00:00:00+00:00");
+
+        linkDao.update(1, lastCheckAt);
+        var link = linkDao.getOneById(1);
+
+        assertThat(link.lastCheckAt()).isEqualTo(lastCheckAt);
     }
 }

@@ -20,7 +20,7 @@ public class HelpActionUnitTest {
     void correctCommand() {
         var update = ActionHelper.makeMockUpdateMessage(CommandEnum.HELP.getCommand());
 
-        var response = action.apply(update);
+        var response = action.apply(update, 1);
 
         assertThat(response).isNotNull();
         Assertions.assertTrue(((String) response.request().getParameters().get("text")).startsWith("*Список команд:*"));
@@ -30,7 +30,7 @@ public class HelpActionUnitTest {
     void anotherMessage() {
         var update = ActionHelper.makeMockUpdateMessage("test");
 
-        var response = action.apply(update);
+        var response = action.apply(update, 1);
 
         assertThat(response).isNotNull();
         Assertions.assertTrue(((String) response.request().getParameters().get("text"))
@@ -41,7 +41,7 @@ public class HelpActionUnitTest {
     void anotherUpdateContent() {
         var update = ActionHelper.makeMockUpdateEmpty();
 
-        var response = action.apply(update);
+        var response = action.apply(update, 1);
 
         assertThat(response).isNotNull();
         Assertions.assertTrue(((String) response.request().getParameters().get("text"))

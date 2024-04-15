@@ -9,7 +9,7 @@ import lombok.Generated;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Generated
 public record Issue(
-    int id,
+    long id,
 
     @JsonProperty("node_id")
     String nodeId,

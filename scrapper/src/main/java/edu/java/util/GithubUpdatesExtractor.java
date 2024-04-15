@@ -10,16 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class GithubUpdatesExtractor implements UpdatesExtractor {
-    @Autowired
-    GitHubConfig config;
+    private final GitHubConfig config;
 
-    @Autowired
-    GitHubClient client;
+    private final GitHubClient client;
 
     private static final String TEMPLATE = """
             Событие для репозитория [%s](%s)
@@ -31,7 +30,7 @@ public class GithubUpdatesExtractor implements UpdatesExtractor {
 
     @Override
     public List<Update> getUpdates(URI url, OffsetDateTime timestamp) {
-        String regex = "https://github.com/(\\w+)/(\\w+)";
+        String regex = "^(?:https?://)?(?:www\\.)?github\\.com/([^/]+)/([^/]+)(?:\\.git)?$";
         Matcher matcher = Pattern.compile(regex).matcher(url.toString());
 
         if (!matcher.find()) {

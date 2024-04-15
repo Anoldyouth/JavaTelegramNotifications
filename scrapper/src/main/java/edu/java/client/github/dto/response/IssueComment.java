@@ -9,44 +9,44 @@ import lombok.Generated;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Generated
 public record IssueComment(
-    int id,
+        long id,
 
-    @JsonProperty("node_id")
+        @JsonProperty("node_id")
 
-    String nodeId,
+        String nodeId,
 
-    String url,
+        String url,
 
-    String body,
+        String body,
 
-    @JsonProperty("body_text")
-    String bodyText,
+        @JsonProperty("body_text")
+        String bodyText,
 
-    @JsonProperty("body_html")
-    String bodyHtml,
+        @JsonProperty("body_html")
+        String bodyHtml,
 
-    @JsonProperty("html_url")
-    String htmlUrl,
+        @JsonProperty("html_url")
+        String htmlUrl,
 
-    SimpleUser user,
+        SimpleUser user,
 
-    @JsonProperty("created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    OffsetDateTime createdAt,
+        @JsonProperty("created_at")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+        OffsetDateTime createdAt,
 
-    @JsonProperty("updated_at")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    OffsetDateTime updatedAt,
+        @JsonProperty("updated_at")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+        OffsetDateTime updatedAt,
 
-    @JsonProperty("issue_url")
-    String issueUrl,
+        @JsonProperty("issue_url")
+        String issueUrl,
 
-    @JsonProperty("author_association")
-    String authorAssociation,
+        @JsonProperty("author_association")
+        String authorAssociation,
 
-    @JsonProperty("performed_via_github_app")
-    GitHubApp performedViaGithubApp,
+        @JsonProperty("performed_via_github_app")
+        GitHubApp performedViaGithubApp,
 
-    ReactionRollup reactions
+        ReactionRollup reactions
 ) {
 }

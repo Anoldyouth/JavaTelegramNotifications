@@ -5,7 +5,7 @@ import lombok.Generated;
 
 @Generated
 public record Actor(
-    int id,
+        long id,
 
     String login,
 

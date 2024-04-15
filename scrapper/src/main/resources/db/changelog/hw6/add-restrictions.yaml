@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Anoldyouth
+      changes:
+        - addUniqueConstraint:
+            columnNames: "tg_chat_id, link_id"
+            tableName: "tg_chats_links"

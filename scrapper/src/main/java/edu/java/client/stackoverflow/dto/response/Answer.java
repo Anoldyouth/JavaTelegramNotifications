@@ -3,6 +3,7 @@ package edu.java.client.stackoverflow.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.Generated;
 
 @Generated
@@ -16,7 +17,7 @@ public record Answer(
     int awardedBountyAmount,
 
     @JsonProperty("awarded_bounty_users")
-    ShallowUser[] awardedBountyUsers,
+    List<ShallowUser> awardedBountyUsers,
 
     String body,
 
@@ -35,12 +36,12 @@ public record Answer(
     @JsonProperty("can_suggest_edit")
     boolean canSuggestEdit,
 
-    Collective[] collectives,
+    List<Collective> collectives,
 
     @JsonProperty("comment_count")
     int commentCount,
 
-    Comment[] comments,
+    List<Comment> comments,
 
     @JsonProperty("community_owned_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -81,19 +82,19 @@ public record Answer(
     ShallowUser owner,
 
     @JsonProperty("posted_by_collectives")
-    Collective[] postedByCollectives,
+    List<Collective> postedByCollectives,
 
     @JsonProperty("question_id")
     int questionId,
 
-    CollectiveRecommendation[] recommendations,
+    List<CollectiveRecommendation> recommendations,
 
     int score,
 
     @JsonProperty("share_link")
     String shareLink,
 
-    String[] tags,
+    List<String> tags,
 
     String title,
 

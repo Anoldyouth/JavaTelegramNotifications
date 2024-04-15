@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,11 +21,16 @@ public class ActionFacadeTest {
     @DisplayName("Проверка выполнения")
     void chain() {
         Action testAction = mock(Action.class);
-        when(testAction.apply(any(Update.class))).thenReturn(new ResponseData(new SendMessage(1L, "test"), new SetMyCommands()));
+        when(testAction.apply(any(Update.class), anyLong()))
+                .thenReturn(new ResponseData(
+                        new SendMessage(1L, "test"),
+                        new SetMyCommands(),
+                        false)
+                );
 
         ActionFacade actionFacade = new ActionFacade();
 
-        var response = actionFacade.applyScenario(List.of(testAction), new Update());
+        var response = actionFacade.applyScenario(List.of(testAction), new Update(), 1L);
 
         assertThat(response).isNotNull();
     }
@@ -33,14 +39,16 @@ public class ActionFacadeTest {
     @DisplayName("Сохранение порядка")
     void actionsOrder() {
         Action firstAction = mock(Action.class);
-        when(firstAction.apply(any(Update.class))).thenReturn(new ResponseData(new SetWebhook(), new SetMyCommands()));
+        when(firstAction.apply(any(Update.class), anyLong()))
+                .thenReturn(new ResponseData(new SetWebhook(), new SetMyCommands(), false));
 
         Action secondAction = mock(Action.class);
-        when(secondAction.apply(any(Update.class))).thenReturn(new ResponseData(new SendMessage(1L, "test"), new SetMyCommands()));
+        when(secondAction.apply(any(Update.class), anyLong()))
+                .thenReturn(new ResponseData(new SendMessage(1L, "test"), new SetMyCommands(), false));
 
         ActionFacade actionFacade = new ActionFacade();
 
-        var response = actionFacade.applyScenario(List.of(firstAction, secondAction), new Update());
+        var response = actionFacade.applyScenario(List.of(firstAction, secondAction), new Update(), 1L);
 
         assertThat(response.request()).isInstanceOf(SetWebhook.class);
     }

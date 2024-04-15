@@ -3,11 +3,12 @@ package edu.java.client.stackoverflow.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.Generated;
 
 @Generated
 public record Site(
-    String[] aliases,
+    List<String> aliases,
 
     @JsonProperty("api_site_parameter")
     String apiSiteParameter,
@@ -35,7 +36,7 @@ public record Site(
     String logoUrl,
 
     @JsonProperty("markdown_extensions")
-    String[] markdownExtensions,
+    List<String> markdownExtensions,
 
     String name,
 
@@ -44,7 +45,7 @@ public record Site(
     OffsetDateTime openBetaDate,
 
     @JsonProperty("related_sites")
-    RelatedSite[] relatedSites,
+    List<RelatedSite> relatedSites,
 
     @JsonProperty("site_state")
     String siteState,

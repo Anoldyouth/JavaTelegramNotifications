@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public abstract class AbstractAction implements Action {
     private Action next;
+    protected long chatId;
 
     @Override
     public final void setNext(Action next) {
@@ -14,13 +15,15 @@ public abstract class AbstractAction implements Action {
     }
 
     @Override
-    public ResponseData apply(Update update) {
+    public ResponseData apply(Update update, long charId) {
+        this.chatId = charId;
+
         return process(update).orElseGet(() -> {
             if (next == null) {
-                return new UnknownCommandResponse(update).makeResponse();
+                return new UnknownCommandResponse(chatId).makeResponse();
             }
 
-            return next.apply(update);
+            return next.apply(update, chatId);
         });
     }
 

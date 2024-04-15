@@ -1,15 +1,14 @@
 package edu.java.service.jdbc;
 
-import edu.java.dao.JdbcLinkDao;
-import edu.java.dao.JdbcTgChatLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
+import edu.java.dao.jdbc.JdbcTgChatLinkDao;
+import edu.java.exception.NotFoundException;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
     private final JdbcLinkDao linkDao;
@@ -24,12 +23,16 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     @Transactional
-    public Link remove(long tgChatId, long linkId) {
-        tgChatLinkDao.remove(tgChatId, linkId);
-
+    public Link remove(long tgChatId, long linkId) throws NotFoundException {
         Link link = linkDao.getOneById(linkId);
 
-        if (linkDao.findAll(tgChatId, 0, 1).count() == 0) {
+        if (link == null) {
+            throw new NotFoundException();
+        }
+
+        tgChatLinkDao.remove(tgChatId, linkId);
+
+        if (tgChatLinkDao.getTgChatIdsByLinkId(linkId).isEmpty()) {
             linkDao.remove(linkId);
         }
 
@@ -37,7 +40,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public Link.FindAllResult listAll(long tgChatId, int offset, int limit) {
+    public FindAllResult listAll(long tgChatId, long offset, long limit) {
         return linkDao.findAll(tgChatId, offset, limit);
     }
 }

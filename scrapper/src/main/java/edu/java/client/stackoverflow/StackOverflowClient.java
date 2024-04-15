@@ -2,12 +2,11 @@ package edu.java.client.stackoverflow;
 
 import edu.java.client.AbstractClient;
 import edu.java.client.stackoverflow.dto.request.GetQuestionsByIdsRequest;
-import edu.java.client.stackoverflow.dto.response.Question;
+import edu.java.client.stackoverflow.dto.response.Response;
 import edu.java.configuration.properties.StackOverflowConfig;
 import java.net.URI;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.UriBuilder;
@@ -17,14 +16,13 @@ public class StackOverflowClient extends AbstractClient {
         super(config.baseUrl());
     }
 
-    public List<Question> getQuestionsByIds(int[] ids, GetQuestionsByIdsRequest request) {
+    public Response getQuestionsByIds(int[] ids, GetQuestionsByIdsRequest request) {
         return this.webClient
                 .get()
                 .uri(uriBuilder -> prepareGetQuestionsByIds(uriBuilder, ids, request))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(Question.class)
-                .collectList()
+                .bodyToMono(Response.class)
                 .block();
     }
 

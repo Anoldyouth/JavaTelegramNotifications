@@ -1,24 +1,16 @@
-package edu.java.bot.util.response;
+package edu.java.bot.util.response.list;
 
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.botcommandscope.BotCommandsScopeChat;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.util.CommandEnum;
+import edu.java.bot.util.response.AbstractResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackResponse extends AbstractResponse {
-    public TrackResponse(Update update) {
-        super(update);
-    }
-
-    @Override
-    public ResponseData makeResponse() {
-        String message = "Введите ссылку для отслеживания.\n"
-                + "Помните, что бот на данный момент умеет отслеживать только GitHub и StackOverFlow.";
-
-        return new ResponseData(createMessageRequest(message), getCommands());
+public abstract class ListScenarioAbstractResponse extends AbstractResponse {
+    public ListScenarioAbstractResponse(long chatId) {
+        super(chatId);
     }
 
     @Override

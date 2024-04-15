@@ -4,6 +4,9 @@ import edu.java.dto.request.tg_chat_state.ReplaceTgChatStateRequest;
 import edu.java.dto.response.exception.ApiErrorResponse;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.dto.response.tg_chat_state.TgChatStateResponse;
+import edu.java.exception.NotFoundException;
+import edu.java.model.TgChat;
+import edu.java.service.TgChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Tag(name = "tg-chat-state")
 @RequestMapping("/tg-chat/{id}/state")
+@RequiredArgsConstructor
 public class TgChatStateController {
+    private final TgChatService tgChatService;
+
     @Operation(summary = "Заменить состояние чата", operationId = "replaceTgChatState")
     @ApiResponse(
             responseCode = "200",
@@ -50,8 +57,10 @@ public class TgChatStateController {
     public ResponseEntity<TgChatStateResponse> replace(
             @PathVariable @Positive long id,
             @RequestBody @Valid ReplaceTgChatStateRequest request
-    ) {
-        return ResponseEntity.ok().body(new TgChatStateResponse(id, request.state()));
+    ) throws NotFoundException {
+        TgChat chat = tgChatService.updateState(id, request.state());
+
+        return ResponseEntity.ok().body(new TgChatStateResponse(chat.id(), chat.state()));
     }
 
     @Operation(summary = "Получить состояние чата", operationId = "getTgChatState")
@@ -76,7 +85,9 @@ public class TgChatStateController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
     )
     @GetMapping
-    public ResponseEntity<TgChatStateResponse> get(@PathVariable @Positive long id) {
-        return ResponseEntity.ok().body(new TgChatStateResponse(id, (short) 1));
+    public ResponseEntity<TgChatStateResponse> get(@PathVariable @Positive long id) throws NotFoundException {
+        TgChat chat = tgChatService.get(id);
+
+        return ResponseEntity.ok().body(new TgChatStateResponse(chat.id(), chat.state()));
     }
 }

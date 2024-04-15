@@ -2,3 +2,6 @@ databaseChangeLog:
   - includeAll:
       relativeToChangelogFile: true
       path: hw4
+  - includeAll:
+      relativeToChangelogFile: true
+      path: hw6

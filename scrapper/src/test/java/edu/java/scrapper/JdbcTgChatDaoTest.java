@@ -1,7 +1,7 @@
 package edu.java.scrapper;
 
 import edu.java.configuration.properties.ApplicationConfig;
-import edu.java.dao.JdbcTgChatDao;
+import edu.java.dao.jdbc.JdbcTgChatDao;
 import edu.java.util.State;
 import java.sql.ResultSet;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-public class JdbcTgChatTest extends IntegrationTest {
+public class JdbcTgChatDaoTest extends IntegrationTest {
     @Autowired
     private JdbcTgChatDao tgChatDao;
     @Autowired

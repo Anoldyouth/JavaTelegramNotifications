@@ -8,16 +8,16 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.client.stackoverflow.dto.request.GetQuestionsByIdsRequest;
-import edu.java.client.stackoverflow.dto.response.Question;
+import edu.java.client.stackoverflow.dto.response.Response;
 import edu.java.configuration.properties.StackOverflowConfig;
 import java.time.OffsetDateTime;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 public class StackOverflowClientUnitTest {
     private WireMockServer wireMockServer;
@@ -41,34 +41,36 @@ public class StackOverflowClientUnitTest {
     public void baseRequest() {
         String response = """
                 {
-                  "tags": [
-                    "windows",
-                    "c#",
-                    ".net"
-                  ],
-                  "owner": {
-                    "reputation": 9001,
-                    "user_id": 1,
-                    "user_type": "registered",
-                    "accept_rate": 55,
-                    "profile_image": "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?d=identicon&r=PG",
-                    "display_name": "Example User",
-                    "link": "https://example.stackexchange.com/users/1/example-user"
-                  },
-                  "is_answered": false,
-                  "view_count": 31415,
-                  "favorite_count": 1,
-                  "down_vote_count": 2,
-                  "up_vote_count": 3,
-                  "answer_count": 0,
-                  "score": 1,
-                  "last_activity_date": 1708766065,
-                  "creation_date": 1708722865,
-                  "last_edit_date": 1708791265,
-                  "question_id": 1234,
-                  "link": "https://example.stackexchange.com/questions/1234/an-example-post-title",
-                  "title": "An example post title",
-                  "body": "An example post body"
+                  "items": [{
+                      "tags": [
+                        "windows",
+                        "c#",
+                        ".net"
+                      ],
+                      "owner": {
+                        "reputation": 9001,
+                        "user_id": 1,
+                        "user_type": "registered",
+                        "accept_rate": 55,
+                        "profile_image": "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?d=identicon&r=PG",
+                        "display_name": "Example User",
+                        "link": "https://example.stackexchange.com/users/1/example-user"
+                      },
+                      "is_answered": false,
+                      "view_count": 31415,
+                      "favorite_count": 1,
+                      "down_vote_count": 2,
+                      "up_vote_count": 3,
+                      "answer_count": 0,
+                      "score": 1,
+                      "last_activity_date": 1708766065,
+                      "creation_date": 1708722865,
+                      "last_edit_date": 1708791265,
+                      "question_id": 1234,
+                      "link": "https://example.stackexchange.com/questions/1234/an-example-post-title",
+                      "title": "An example post title",
+                      "body": "An example post body"
+                  }]
                 }""";
 
         stubFor(get(urlEqualTo("/questions/1?site=stackoverflow&page=1&pagesize=100"))
@@ -77,11 +79,11 @@ public class StackOverflowClientUnitTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(response)));
 
-        List<Question> result = client
+        Response result = client
                 .getQuestionsByIds(new int[]{1}, new GetQuestionsByIdsRequest());
 
         assertNotNull(result);
-        assertEquals(1, result.size());
+        assertEquals(1, result.items().size());
     }
 
     @Test
@@ -90,34 +92,36 @@ public class StackOverflowClientUnitTest {
 
         String response = """
                 {
-                  "tags": [
-                    "windows",
-                    "c#",
-                    ".net"
-                  ],
-                  "owner": {
-                    "reputation": 9001,
-                    "user_id": 1,
-                    "user_type": "registered",
-                    "accept_rate": 55,
-                    "profile_image": "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?d=identicon&r=PG",
-                    "display_name": "Example User",
-                    "link": "https://example.stackexchange.com/users/1/example-user"
-                  },
-                  "is_answered": false,
-                  "view_count": 31415,
-                  "favorite_count": 1,
-                  "down_vote_count": 2,
-                  "up_vote_count": 3,
-                  "answer_count": 0,
-                  "score": 1,
-                  "last_activity_date": 1708766065,
-                  "creation_date": 1708722865,
-                  "last_edit_date": 1708791265,
-                  "question_id": 1234,
-                  "link": "https://example.stackexchange.com/questions/1234/an-example-post-title",
-                  "title": "An example post title",
-                  "body": "An example post body"
+                  "items": [{
+                      "tags": [
+                        "windows",
+                        "c#",
+                        ".net"
+                      ],
+                      "owner": {
+                        "reputation": 9001,
+                        "user_id": 1,
+                        "user_type": "registered",
+                        "accept_rate": 55,
+                        "profile_image": "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?d=identicon&r=PG",
+                        "display_name": "Example User",
+                        "link": "https://example.stackexchange.com/users/1/example-user"
+                      },
+                      "is_answered": false,
+                      "view_count": 31415,
+                      "favorite_count": 1,
+                      "down_vote_count": 2,
+                      "up_vote_count": 3,
+                      "answer_count": 0,
+                      "score": 1,
+                      "last_activity_date": 1708766065,
+                      "creation_date": 1708722865,
+                      "last_edit_date": 1708791265,
+                      "question_id": 1234,
+                      "link": "https://example.stackexchange.com/questions/1234/an-example-post-title",
+                      "title": "An example post title",
+                      "body": "An example post body"
+                  }]
                 }""";
 
         stubFor(get(urlEqualTo(
@@ -129,11 +133,11 @@ public class StackOverflowClientUnitTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(response)));
 
-        List<Question> result = client
+        Response result = client
                 .getQuestionsByIds(new int[]{1}, request);
 
         assertNotNull(result);
-        assertEquals(1, result.size());
+        assertEquals(1, result.items().size());
     }
 
     @NotNull

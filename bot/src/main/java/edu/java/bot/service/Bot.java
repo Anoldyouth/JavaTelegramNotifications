@@ -3,6 +3,8 @@ package edu.java.bot.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.DeleteMessage;
+import edu.java.bot.client.scrapper.ScrapperClient;
 import edu.java.bot.util.ScenarioDispatcher;
 import edu.java.bot.util.action.Action;
 import edu.java.bot.util.action.ActionFacade;
@@ -25,25 +27,31 @@ public class Bot implements AutoCloseable, UpdatesListener {
 
     private final ActionFacade facade;
 
+    private final ScrapperClient scrapperClient;
+
     @Override
     public int process(List<Update> list) {
-        /*
-         * TODO
-         * Придумать, как защититься от отказов системы
-         * Например, на одном сообщении все сломалось - что делать дальше
-         */
         for (Update update: list) {
-            LOGGER.debug("Bot get update");
-            // TODO Добавить маппинг цепочки в зависимости от текущего состояния приложения для пользователя
-            List<Action> scenario = mapper.getScenario(ScenarioDispatcher.ScenarioType.MAIN);
+            ChatInfo chatInfo = getChatInfo(update);
+            List<Action> scenario = mapper.getScenario(chatInfo.state);
 
             try {
-                var response = facade.applyScenario(scenario, update);
+                var response = facade.applyScenario(
+                        scenario,
+                        update,
+                        chatInfo.id
+                );
 
+                // Удаление сообщения
+                if (response.deleteLastMessage()) {
+                    deleteMessage(chatInfo.id, update);
+                }
                 // Отправка сообщения
                 bot.execute(response.request());
-                // Отправка меню команд
-                bot.execute(response.menu());
+                if (response.menu() != null) {
+                    // Отправка меню команд
+                    bot.execute(response.menu());
+                }
             } catch (Throwable throwable) {
                 LOGGER.error(throwable.toString());
                 LOGGER.error(Arrays.toString(throwable.getStackTrace()));
@@ -63,5 +71,50 @@ public class Bot implements AutoCloseable, UpdatesListener {
         bot.setUpdatesListener(this);
 
         LOGGER.debug("Bot started");
+    }
+
+    private ChatInfo getChatInfo(Update update) {
+        long chatId = 0;
+
+        if (update.message() != null) {
+            chatId = update.message().chat().id();
+        }
+
+        if (update.editedMessage() != null) {
+            chatId = update.editedMessage().chat().id();
+        }
+
+        if (update.inlineQuery() != null) {
+            chatId = update.inlineQuery().from().id();
+        }
+
+        if (update.chosenInlineResult() != null) {
+            chatId = update.chosenInlineResult().from().id();
+        }
+
+        if (update.callbackQuery() != null) {
+            chatId = update.callbackQuery().from().id();
+        }
+
+        try {
+            var response = scrapperClient.getTgChatState(chatId);
+            return new ChatInfo(chatId, response.state());
+        } catch (Exception exception) {
+            return new ChatInfo(chatId, ScenarioDispatcher.ScenarioType.START);
+        }
+    }
+
+    private void deleteMessage(long chatId, Update update) {
+        try {
+            int messageId = update.callbackQuery().message().messageId(); // Нет аналога deprecated поля
+            var message = new DeleteMessage(chatId, messageId);
+
+            bot.execute(message);
+        } catch (Exception ignored) {
+            // Сообщение нельзя удалить после 48 часов
+        }
+    }
+
+    private record ChatInfo(long id, ScenarioDispatcher.ScenarioType state) {
     }
 }

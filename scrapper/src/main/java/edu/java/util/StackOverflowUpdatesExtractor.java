@@ -11,15 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
-    private static final String FILTER = "!.D4(1w)YlipX6OPO1pl1(bIhbp*I9AKZhioPZfjMspO8hRG.8djruHpSgxZ-l_ekoulUVCR3mfn";
+    public static final String FILTER = "!.D4(1w)YlipblLzxCCZrf.XUloaPKEW-l5FYoEnrw5EEjtWRmU0AhUUU3xApm0WA1RiUblytnpv";
 
-    @Autowired
-    StackOverflowClient client;
+    private final StackOverflowClient client;
+
+    private URI url;
+    private OffsetDateTime timestamp;
 
     @SuppressWarnings("RegexpSingleline")
     private static final String TEMPLATE = """
@@ -32,7 +35,10 @@ public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
 
     @Override
     public List<Update> getUpdates(URI url, OffsetDateTime timestamp) {
-        String regex = "https://stackoverflow.com/questions/(\\d+)/.*";
+        this.url = url;
+        this.timestamp = timestamp;
+
+        String regex = "^(?:https?://)?(?:www\\.)?stackoverflow\\.com/questions/(\\d+).*";
         Matcher matcher = Pattern.compile(regex).matcher(url.toString());
 
         if (!matcher.find()) {
@@ -47,13 +53,28 @@ public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
         request.setPageSize(1);
         request.setFilter(FILTER);
 
-        Question question = client.getQuestionsByIds(new int[]{questionId}, request).getFirst();
+        var items = client.getQuestionsByIds(new int[]{questionId}, request).items();
+        Question question = items.getFirst();
 
         if (question == null) {
             return updates;
         }
 
-        for (Comment comment: question.comments()) {
+        if (question.comments() != null) {
+            updates.addAll(checkComments(question.comments(), question));
+        }
+
+        if (question.answers() != null) {
+            updates.addAll(checkAnswers(question.answers(), question));
+        }
+
+        return updates;
+    }
+
+    private List<Update> checkComments(List<Comment> comments, Question question) {
+        List<Update> updates = new ArrayList<>();
+
+        for (Comment comment: comments) {
             if (comment.creationDate().isBefore(timestamp)) {
                 continue;
             }
@@ -69,21 +90,15 @@ public class StackOverflowUpdatesExtractor implements UpdatesExtractor {
             )));
         }
 
-        for (Answer answer: question.answers()) {
-            for (Comment comment: answer.comments()) {
-                if (comment.creationDate().isBefore(timestamp)) {
-                    continue;
-                }
+        return updates;
+    }
 
-                updates.add(new Update(url, String.format(
-                        TEMPLATE,
-                        question.title(),
-                        question.link(),
-                        "answer comment",
-                        comment.owner().displayName(),
-                        comment.owner().link(),
-                        comment.creationDate()
-                )));
+    private List<Update> checkAnswers(List<Answer> answers, Question question) {
+        List<Update> updates = new ArrayList<>();
+
+        for (Answer answer: question.answers()) {
+            if (answer.comments() != null) {
+                updates.addAll(checkComments(answer.comments(), question));
             }
 
             if (answer.creationDate().isBefore(timestamp)) {

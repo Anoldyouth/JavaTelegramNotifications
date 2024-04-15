@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ActionFacade {
-    public ResponseData applyScenario(@NotNull List<Action> actions, Update update) {
-        return buildChain(actions).apply(update);
+    public ResponseData applyScenario(
+            @NotNull List<Action> actions,
+            Update update,
+            long chatId
+    ) {
+        return buildChain(actions).apply(update, chatId);
     }
 
     private Action buildChain(@NotNull List<Action> actions) {

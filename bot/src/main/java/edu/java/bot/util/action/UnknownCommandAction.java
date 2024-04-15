@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class UnknownCommandAction extends AbstractAction {
     @Override
     protected Optional<ResponseData> process(Update update) {
-        return Optional.of(new UnknownCommandResponse(update).makeResponse());
+        return Optional.of(new UnknownCommandResponse(chatId).makeResponse());
     }
 }

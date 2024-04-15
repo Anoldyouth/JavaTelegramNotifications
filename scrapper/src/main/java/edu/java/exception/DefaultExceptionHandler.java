@@ -4,6 +4,7 @@ import edu.java.dto.response.exception.ApiErrorResponse;
 import edu.java.dto.response.exception.ValidationError;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,6 +34,19 @@ public class DefaultExceptionHandler {
         );
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> notFoundException(NotFoundException exception) {
+        var response = new ApiErrorResponse(
+                "Not Found Exception",
+                "404",
+                exception.getClass().getName(),
+                exception.getMessage(),
+                exception.getStackTrace()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
