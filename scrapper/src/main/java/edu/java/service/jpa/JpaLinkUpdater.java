@@ -69,7 +69,7 @@ public class JpaLinkUpdater implements LinkUpdater {
             sendLinkUpdate.send(request);
         }
 
-        link.setCreatedAt(timestamp);
+        link.setLastCheckAt(timestamp);
         linkRepository.saveAndFlush(link);
     }
 
