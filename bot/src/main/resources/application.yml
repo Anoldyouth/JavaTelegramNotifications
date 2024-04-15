@@ -39,3 +39,25 @@ bucket:
   capacity: 100
   tokens: 1
   period: 60s
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /
+      path-mapping:
+        prometheus: /metrics
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+    enabled-by-default: false
+  server:
+    port: ${BOT_MANAGEMENT_PORT:8091}

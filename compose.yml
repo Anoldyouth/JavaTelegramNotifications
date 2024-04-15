@@ -62,10 +62,39 @@ services:
     networks:
       - backend
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+    environment:
+      - BOT_MANAGEMENT_PORT=${BOT_MANAGEMENT_PORT:-8091}
+      - SCRAPPER_MANAGEMENT_PORT=${SCRAPPER_MANAGEMENT_PORT:-8081}
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    networks:
+      - backend
+
 volumes:
   postgresql: { }
   zookeeper: { }
   kafka: { }
+  grafana: { }
 
 networks:
   backend: { }

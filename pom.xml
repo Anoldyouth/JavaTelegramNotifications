@@ -24,6 +24,7 @@
         <spring-boot.version>3.2.2</spring-boot.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <spring-aspects.version>6.1.5</spring-aspects.version>
+        <spring-boot-starter-actuator.version>3.2.4</spring-boot-starter-actuator.version>
 
         <!-- Other -->
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
@@ -31,6 +32,8 @@
         <paulschwarz-spring-dotenv.version>4.0.0</paulschwarz-spring-dotenv.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
         <bucket4j-core.version>7.6.0</bucket4j-core.version>
+        <micrometer-registry-prometheus.version>1.12.5</micrometer-registry-prometheus.version>
+        <micrometer-tracing-bridge-brave.version>1.2.5</micrometer-tracing-bridge-brave.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
@@ -119,6 +122,31 @@
                 <artifactId>bucket4j-core</artifactId>
                 <version>${bucket4j-core.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot-starter-actuator.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer-registry-prometheus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-tracing-bridge-brave</artifactId>
+                <version>${micrometer-tracing-bridge-brave.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
 
             <!-- Database -->
             <dependency>
