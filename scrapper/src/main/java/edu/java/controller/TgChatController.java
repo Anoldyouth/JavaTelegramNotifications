@@ -1,6 +1,7 @@
 package edu.java.controller;
 
 import edu.java.dto.response.exception.ApiErrorResponse;
+import edu.java.dto.response.exception.TooManyRequestsResponse;
 import edu.java.dto.response.exception.ValidationErrorsResponse;
 import edu.java.service.TgChatService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,11 @@ public class TgChatController {
             content = @Content(schema = @Schema(implementation = ValidationErrorsResponse.class))
     )
     @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
+    )
+    @ApiResponse(
             responseCode = "500",
             description = "Ошибка сервера",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
@@ -48,6 +54,11 @@ public class TgChatController {
             responseCode = "400",
             description = "Некорректные параметры",
             content = @Content(schema = @Schema(implementation = ValidationErrorsResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "429",
+            description = "Слишком много запросов",
+            content = @Content(schema = @Schema(implementation = TooManyRequestsResponse.class))
     )
     @ApiResponse(
             responseCode = "500",

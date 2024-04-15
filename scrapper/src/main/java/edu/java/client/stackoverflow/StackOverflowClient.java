@@ -10,10 +10,11 @@ import java.time.ZoneOffset;
 import java.util.StringJoiner;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.UriBuilder;
+import reactor.util.retry.Retry;
 
 public class StackOverflowClient extends AbstractClient {
-    public StackOverflowClient(StackOverflowConfig config) {
-        super(config.baseUrl());
+    public StackOverflowClient(StackOverflowConfig config, Retry retry) {
+        super(config.baseUrl(), retry);
     }
 
     public Response getQuestionsByIds(int[] ids, GetQuestionsByIdsRequest request) {

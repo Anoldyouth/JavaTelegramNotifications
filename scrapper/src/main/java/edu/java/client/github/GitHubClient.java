@@ -6,10 +6,11 @@ import edu.java.client.github.dto.response.RepositoryEvent;
 import edu.java.configuration.properties.GitHubConfig;
 import java.util.List;
 import org.springframework.http.MediaType;
+import reactor.util.retry.Retry;
 
 public class GitHubClient extends AbstractClient {
-    public GitHubClient(GitHubConfig config) {
-        super(config.baseUrl());
+    public GitHubClient(GitHubConfig config, Retry retry) {
+        super(config.baseUrl(), retry);
     }
 
     public List<RepositoryEvent> listRepositoryEvents(String owner, String repo, ListRepositoryEventsRequest request) {

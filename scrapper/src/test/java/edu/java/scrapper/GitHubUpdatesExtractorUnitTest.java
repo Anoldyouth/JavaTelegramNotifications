@@ -10,11 +10,13 @@ import edu.java.client.github.GitHubClient;
 import edu.java.configuration.properties.GitHubConfig;
 import edu.java.util.GithubUpdatesExtractor;
 import java.net.URI;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
 public class GitHubUpdatesExtractorUnitTest {
     private WireMockServer wireMockServer;
@@ -26,7 +28,10 @@ public class GitHubUpdatesExtractorUnitTest {
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
 
-        GitHubClient client = new GitHubClient(new GitHubConfig("http://localhost:" + wireMockServer.port(), 50));
+        GitHubClient client = new GitHubClient(
+                new GitHubConfig("http://localhost:" + wireMockServer.port(), 50),
+                Retry.fixedDelay(1, Duration.ofSeconds(1))
+        );
         GitHubConfig config = new GitHubConfig("test", 1);
         githubUpdatesExtractor = new GithubUpdatesExtractor(config, client);
     }
