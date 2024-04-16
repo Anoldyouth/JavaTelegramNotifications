@@ -24,6 +24,11 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_HOST:kafka}:${KAFKA_PORT:9092}
+    consumer:
+      bootstrap-servers: ${KAFKA_HOST:kafka}:${KAFKA_PORT:9092}
 
 server:
   port: ${BOT_SERVER_PORT:8090}

@@ -1,7 +1,39 @@
 services:
+  bot:
+    hostname: ${BOT_HOST:-bot}
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    command: java -jar /app/bot.jar
+    env_file:
+      - ./.env
+    volumes:
+      - bot:/app
+    depends_on:
+      - scrapper
+      - kafka
+    networks:
+      - backend
+
+  scrapper:
+    hostname: ${SCRAPPER_HOST:-scrapper}
+    build:
+      context: .
+      dockerfile: scrapper/Dockerfile
+    command: java -jar /app/scrapper.jar
+    env_file:
+      - ./.env
+    volumes:
+      - scrapper:/app
+    depends_on:
+      - postgresql
+      - kafka
+    networks:
+      - backend
+
   postgresql:
     image: postgres:16
-    hostname: ${DB_HOST:-127.0.0.1}
+    hostname: ${DB_HOST:-postgresql}
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
@@ -30,7 +62,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
-    hostname: zookeeper
+    hostname: ${ZOOKEEPER_HOST:-zookeeper}
     container_name: zookeeper
     ports:
       - "${ZOOKEEPER_PORT:-2181}:2181"
@@ -44,7 +76,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
-    hostname: kafka
+    hostname: ${KAFKA_HOST:-kafka}
     container_name: kafka
     ports:
       - "${KAFKA_PORT:-9092}:9092"
@@ -64,13 +96,16 @@ services:
 
   prometheus:
     image: prom/prometheus
+    hostname: ${PROMETHEUS_HOST:-prometheus}
     container_name: prometheus
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     volumes:
       - ./prometheus:/etc/prometheus
     environment:
+      - BOT_HOST=${BOT_HOST:-bot}
       - BOT_MANAGEMENT_PORT=${BOT_MANAGEMENT_PORT:-8091}
+      - SCRAPPER_HOST=${SCRAPPER_HOST:-scrapper}
       - SCRAPPER_MANAGEMENT_PORT=${SCRAPPER_MANAGEMENT_PORT:-8081}
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -80,6 +115,7 @@ services:
 
   grafana:
     image: grafana/grafana-oss
+    hostname: ${GRAFANA_HOST:-grafana}
     container_name: grafana
     ports:
       - "${GRAFANA_PORT:-3000}:3000"
@@ -91,6 +127,8 @@ services:
       - backend
 
 volumes:
+  bot: { }
+  scrapper: { }
   postgresql: { }
   zookeeper: { }
   kafka: { }

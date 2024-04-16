@@ -5,10 +5,10 @@ global:
 scrape_configs:
   - job_name: 'bot'
     static_configs:
-      - targets: ['172.17.0.1:8091']
+      - targets: ['bot:8091']
     metrics_path: /metrics
 
   - job_name: 'scrapper'
     static_configs:
-      - targets: ['172.17.0.1:8081']
+      - targets: ['scrapper:8081']
     metrics_path: /metrics
