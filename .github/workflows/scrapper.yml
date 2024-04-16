@@ -35,8 +35,8 @@ jobs:
       - name: build and publish the docker image
         run: |
           docker login --username ${{ secrets.GH_USERNAME }} --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build --tag ghcr.io/anoldyouth/bot:latest -f ${{ github.workspace }}/bot/Dockerfile .
-          docker push ghcr.io/anoldyouth/bot:latest
+          docker build --tag ghcr.io/anoldyouth/scrapper:latest -f ${{ github.workspace }}/scrapper/Dockerfile .
+          docker push ghcr.io/anoldyouth/scrapper:latest
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
