@@ -24,7 +24,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @Configuration
 @EnableKafka
 public class KafkaConfiguration {
-    private static final String DEFAULT_SERVER = "localhost:9092";
+    private static final String DEFAULT_SERVER = "kafka:9092";
 
     public ConsumerFactory<String, SendUpdateRequest> linkUpdatesConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
