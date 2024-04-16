@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY pom.xml /app/pom.xml
 COPY .git /app/.git
-COPY .env /app/.env
 COPY bot/pom.xml /app/bot/pom.xml
 COPY bot/src/main /app/bot/src/main
 
@@ -13,4 +12,3 @@ RUN mvn -f bot/pom.xml package
 FROM openjdk:21-jdk-slim
 
 COPY --from=builder /app/bot/target/bot.jar /app/bot.jar
-COPY --from=builder /app/.env /app/.env
